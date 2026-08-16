@@ -15,7 +15,7 @@ graph TD
     C --> D[(ChromaDB Local Vector Store<br/>22+ CMS NCD/LCD Guidelines)]
     D --> E[Clinical Drafter LLM<br/>DeepSeek-V4-Pro]
     E --> F[Draft Appeal Letter]
-    F --> G[Adversarial Clinical Auditor LLM<br/>Qwen 2.5 32B]
+    F --> G[Adversarial Clinical Auditor LLM<br/>Deepseek v4 pro]
     A -.-> G
     G --> H[Audited Appeal Package<br/>Severity Flags & Guidelines Grounding]
     H --> I[React 19 Interactive Workspace]
