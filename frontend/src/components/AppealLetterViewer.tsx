@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import type { AuditFlag } from '../lib/types'
 import { segmentByParagraphs } from '../lib/highlight'
 import {
@@ -22,6 +22,15 @@ interface AppealLetterViewerProps {
   onRegenerate?: () => void
   patientName?: string | null
   insurerName?: string | null
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
 }
 
 function downloadAppealText(text: string): void {
@@ -89,12 +98,12 @@ function printAppealDocument(text: string, patient?: string | null, insurer?: st
         <div class="header">
           <h1 class="title">Formal Medical Necessity Appeal Letter</h1>
           <div class="meta">
-            ${patient ? `<div><strong>Patient:</strong> ${patient}</div>` : ''}
-            ${insurer ? `<div><strong>Insurer:</strong> ${insurer}</div>` : ''}
-            <div><strong>Generated on:</strong> ${new Date().toLocaleDateString()}</div>
+            ${patient ? `<div><strong>Patient:</strong> ${escapeHtml(patient)}</div>` : ''}
+            ${insurer ? `<div><strong>Insurer:</strong> ${escapeHtml(insurer)}</div>` : ''}
+            <div><strong>Generated on:</strong> ${escapeHtml(new Date().toLocaleDateString())}</div>
           </div>
         </div>
-        <div class="content">${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+        <div class="content">${escapeHtml(text)}</div>
         <div class="footer">
           Generated via AppealForge · Independent Clinical Evidence & Audit Engine
         </div>
@@ -122,7 +131,12 @@ export default function AppealLetterViewer({
   const [copied, setCopied] = useState(false)
   const [selectedFlagIndex, setSelectedFlagIndex] = useState<number | null>(null)
 
+  useEffect(() => {
+    setEditedText(appealText)
+  }, [appealText])
+
   const currentText = isEditing ? editedText : appealText
+
 
   const paragraphs = useMemo(
     () => segmentByParagraphs(currentText, flags),
