@@ -72,7 +72,7 @@ export default function ExtractedCodesPanel({
                 No specific CPT procedure codes extracted from the denial document.
               </div>
             ) : (
-              <ul className="grid gap-2.5 sm:grid-cols-2">
+              <ul className="grid gap-2.5">
                 {cptCodes.map((code, idx) => {
                   const key = `cpt-${code.code}-${idx}`
                   const isCopied = copiedKey === key
@@ -110,7 +110,7 @@ export default function ExtractedCodesPanel({
                 No ICD-10 diagnostic codes extracted from the denial document.
               </div>
             ) : (
-              <ul className="grid gap-2.5 sm:grid-cols-2">
+              <ul className="grid gap-2.5">
                 {icd10Codes.map((code, idx) => {
                   const key = `icd-${code.code}-${idx}`
                   const isCopied = copiedKey === key
@@ -141,6 +141,7 @@ export default function ExtractedCodesPanel({
               </ul>
             )}
           </TabsContent>
+
 
           <TabsContent value="citations" className="mt-4">
             {citations.length === 0 ? (

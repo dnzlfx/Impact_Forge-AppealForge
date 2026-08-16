@@ -254,9 +254,9 @@ export default function AppealLetterViewer({
                   <svg className="h-4 w-4 text-amber" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
-                  Clinical Fact-Check Notices
+                  AI Clinical Auditor 2 (Discrepancy & Hallucination Review)
                 </span>
-                <span className="text-[11px] text-mid">Click an issue to inspect context</span>
+                <span className="text-[11px] text-mid">Click an issue to highlight in text</span>
               </div>
               <div className="grid gap-2">
                 {flags.map((flag, idx) => (
@@ -298,40 +298,48 @@ export default function AppealLetterViewer({
             </div>
           ) : (
             <div className="flex flex-col gap-4 rounded-[4px] border border-border bg-canvas/30 p-6 font-sans">
-              {paragraphs.map((segments, paragraphIndex) => (
-                <p key={paragraphIndex} className="text-sm leading-[1.8] text-deep">
-                  {segments.map((segment, segmentIndex) =>
-                    segment.flag ? (
-                      <mark
-                        key={segmentIndex}
-                        tabIndex={0}
-                        className={`box-decoration-clone rounded-[2px] px-1 py-0.5 font-medium transition-all ${
-                          selectedFlagIndex !== null && flags[selectedFlagIndex]?.claim_text === segment.flag.claim_text
-                            ? 'bg-flag-red text-white ring-2 ring-flag-red'
-                            : 'bg-flag-bg text-flag-red hover:bg-flag-red/20'
-                        }`}
-                        title={`${segment.flag.issue_type} (${segment.flag.severity}): ${segment.flag.explanation}`}
-                      >
-                        {segment.text}
-                      </mark>
-                    ) : (
-                      <span key={segmentIndex}>{segment.text}</span>
-                    ),
-                  )}
-                </p>
-              ))}
+              {currentText.trim() ? (
+                paragraphs.map((segments, paragraphIndex) => (
+                  <p key={paragraphIndex} className="text-sm leading-[1.8] text-deep">
+                    {segments.map((segment, segmentIndex) =>
+                      segment.flag ? (
+                        <mark
+                          key={segmentIndex}
+                          tabIndex={0}
+                          className={`box-decoration-clone rounded-[2px] px-1 py-0.5 font-medium transition-all ${
+                            selectedFlagIndex !== null && flags[selectedFlagIndex]?.claim_text === segment.flag.claim_text
+                              ? 'bg-flag-red text-white ring-2 ring-flag-red'
+                              : 'bg-flag-bg text-flag-red hover:bg-flag-red/20'
+                          }`}
+                          title={`${segment.flag.issue_type} (${segment.flag.severity}): ${segment.flag.explanation}`}
+                        >
+                          {segment.text}
+                        </mark>
+                      ) : (
+                        <span key={segmentIndex}>{segment.text}</span>
+                      ),
+                    )}
+                  </p>
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center p-8 text-center text-xs text-mid">
+                  <p className="font-semibold text-deep text-sm mb-1">No appeal text was returned by the AI pipeline.</p>
+                  <p>Check the backend model configuration or retry generating the appeal.</p>
+                </div>
+              )}
 
-              {flags.length === 0 && (
+              {flags.length === 0 && currentText.trim() && (
                 <Alert variant="success">
-                  <AlertTitle>Independent Audit Passed</AlertTitle>
+                  <AlertTitle>Dual-AI Independent Audit Passed</AlertTitle>
                   <AlertDescription>
-                    All medical claims, clinical justifications, and CPT/ICD codes cited are validated against official CMS coverage policies.
+                    Auditor AI cross-examined all clinical claims, treatment timelines, and diagnostic codes against official CMS policies with zero unverified discrepancies found.
                   </AlertDescription>
                 </Alert>
               )}
             </div>
           )}
         </CardContent>
+
 
         <CardFooter className="flex items-center justify-between gap-4 flex-wrap">
           <div className="text-xs text-mid">
