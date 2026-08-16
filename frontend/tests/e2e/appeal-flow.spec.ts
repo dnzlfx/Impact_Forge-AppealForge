@@ -51,9 +51,18 @@ We respectfully request immediate reconsideration and overturn of this denial. F
                 'No physical therapy logs were uploaded in the medical record to substantiate the 6-week duration claim. Attach physical therapy records or cite physician notes.',
             },
           ],
+          generation_logs: [
+            '[Pipeline] Starting AppealForge clinical synthesis engine...',
+            '[Extraction] Extracted CPT codes: 70551, 72148 | ICD-10 codes: M54.5, G43.909',
+            '[RAG Engine] Retrieved 2 CMS National & Local Coverage Determinations',
+            '[AI Writer] Generated formal appeal letter draft adhering to CMS medical necessity criteria',
+            '[AI Auditor] Cross-examined draft against clinical record',
+            '[Pipeline] Workflow execution complete',
+          ],
         }),
       });
     });
+
 
 
     await page.goto('/');
@@ -186,13 +195,20 @@ We respectfully request immediate reconsideration and overturn of this denial. F
     await expect(page.getByText('CPT Verified').first()).toBeVisible();
 
     // Switch to ICD-10 tab
-    await icdTab.click();
+    await icdTab.click({ force: true });
     await expect(page.getByText('ICD-10 Verified').first()).toBeVisible();
 
     // Switch to Citations tab
     await citTab.click({ force: true });
     await expect(page.getByText('CMS Guideline').first()).toBeVisible();
     await expect(page.getByText('CMS NCD 220.4')).toBeVisible();
+
+    // Switch to AI Audit Logs tab
+    const logsTab = page.getByRole('tab', { name: /AI Audit Logs/i });
+    await expect(logsTab).toBeVisible();
+    await logsTab.click({ force: true });
+    await expect(page.getByText(/Pipeline Execution Trace/i)).toBeVisible();
+
 
     // Test Copy button clipboard interaction
     await copyButton.click();
