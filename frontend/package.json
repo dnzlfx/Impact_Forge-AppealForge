@@ -7,6 +7,7 @@
     "dev": "node ./node_modules/vite/bin/vite.js",
     "build": "node ./node_modules/typescript/bin/tsc -b && node ./node_modules/vite/bin/vite.js build",
     "lint": "node ./node_modules/oxlint/bin/oxlint",
+    "test:e2e": "node ./node_modules/@playwright/test/cli.js test",
     "preview": "node ./node_modules/vite/bin/vite.js preview"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
