@@ -29,8 +29,15 @@ class AppealService:
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0.2,
+            max_tokens=2048,
         )
-        return response.choices[0].message.content or ""
+        msg = response.choices[0].message
+        content = msg.content or ""
+        # Algunos modelos devuelven la respuesta en reasoning_content o content con think tags
+        if not content and hasattr(msg, "reasoning_content") and msg.reasoning_content:
+            content = msg.reasoning_content
+        return content
+
 
     async def _generate_draft(
         self,
