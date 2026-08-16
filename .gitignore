@@ -3,3 +3,16 @@ __pycache__/
 *.pyc
 .venv/
 backend/data/
+
+# Binarios / instaladores
+*.msi
+*.exe
+
+# Tooling local de opencode
+.opencode/
+opencode.json
+design-skills/
+design-skills.zip
+
+# Docs internos
+organizacion_impactforge.pdf

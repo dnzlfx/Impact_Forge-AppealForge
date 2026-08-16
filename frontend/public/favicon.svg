@@ -1,0 +1,6 @@
+<!-- Tokens: deep=#312c4d, sky=#b5cef5, accent=#3c90b8 (ver src/index.css @theme) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#312c4d"/>
+  <path d="M9 15.5 13.5 20l4.5-5-4.5-5-4.5 5.5Z" stroke="#b5cef5" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
+  <path d="M17 19.5h6" stroke="#3c90b8" stroke-width="1.8" stroke-linecap="round"/>
+</svg>
