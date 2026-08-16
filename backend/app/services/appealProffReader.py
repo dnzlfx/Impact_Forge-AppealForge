@@ -1,6 +1,5 @@
 import json
 import logging
-from typing import Dict, List
 from openai import AsyncOpenAI
 
 from app.core.config import settings
@@ -13,13 +12,21 @@ logger = logging.getLogger(__name__)
 
 
 class AppealProofreaderService:
-    def __init__(self):
-        self.client = AsyncOpenAI(
+    @property
+    def client(self) -> AsyncOpenAI:
+        return AsyncOpenAI(
             api_key=settings.FEATHERLESS_API_KEY or "dummy-key",
             base_url=settings.FEATHERLESS_BASE_URL,
+            default_headers={"User-Agent": "AppealForge/1.0"},
         )
-        self.model = settings.DEFAULT_MODEL
-        self.auditor_model = settings.AUDITOR_MODEL
+
+    @property
+    def model(self) -> str:
+        return settings.DEFAULT_MODEL
+
+    @property
+    def auditor_model(self) -> str:
+        return settings.AUDITOR_MODEL
 
     async def _call_llm(self, system_prompt: str, user_prompt: str, model: str | None = None) -> str:
         response = await self.client.chat.completions.create(
@@ -33,17 +40,19 @@ class AppealProofreaderService:
         )
         msg = response.choices[0].message
         content = msg.content or ""
-        if not content and hasattr(msg, "reasoning_content") and msg.reasoning_content:
-            content = msg.reasoning_content
+        if not content:
+            if hasattr(msg, "reasoning") and msg.reasoning:
+                content = msg.reasoning
+            elif hasattr(msg, "reasoning_content") and msg.reasoning_content:
+                content = msg.reasoning_content
         return content
-
 
     async def proofread_draft(
         self,
         draft_text: str,
         payload: AppealCreate,
-        codes: Dict[str, List[str]],
-        citations: List[RagCitation],
+        codes: dict[str, list[str]],
+        citations: list[RagCitation],
     ) -> str:
         guidelines_text = "\n\n".join(
             [f"- [{c.source}]: {c.text}" for c in citations]
@@ -66,7 +75,7 @@ class AppealProofreaderService:
 
     async def _audit_draft(
         self, draft_text: str, medical_record_text: str
-    ) -> List[AuditFlag]:
+    ) -> list[AuditFlag]:
         user_content = (
             f"ORIGINAL MEDICAL RECORD:\n{medical_record_text}\n\n"
             f"DRAFT APPEAL LETTER TO AUDIT:\n{draft_text}\n\n"
@@ -74,7 +83,7 @@ class AppealProofreaderService:
         )
 
         audit_raw = await self._call_llm(AUDITOR_SYSTEM_PROMPT, user_content, model=self.auditor_model)
-        flags: List[AuditFlag] = []
+        flags: list[AuditFlag] = []
 
         try:
             cleaned = audit_raw.strip()
@@ -95,7 +104,7 @@ class AppealProofreaderService:
                     )
                 )
         except Exception as ex:
-            logger.warning(f"No se pudo parsear el resultado del auditor como JSON: {ex}")
+            logger.warning(f"Failed to parse auditor response as JSON: {ex}")
 
         return flags
 
@@ -112,7 +121,7 @@ class AppealProofreaderService:
 
         appeal_text = await self.proofread_draft("", payload, codes, citations)
 
-        audit_flags = []
+        audit_flags: list[AuditFlag] = []
         if payload.medical_record_text.strip():
             audit_flags = await self._audit_draft(appeal_text, payload.medical_record_text)
 
@@ -124,5 +133,6 @@ class AppealProofreaderService:
         )
 
 
-appealProofreader_service = AppealProofreaderService()
-appealProffreader_service = appealProofreader_service
+appeal_proofreader_service = AppealProofreaderService()
+appealProofreader_service = appeal_proofreader_service
+appealProffreader_service = appeal_proofreader_service

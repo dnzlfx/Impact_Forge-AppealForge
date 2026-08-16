@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DenialUpload from './components/DenialUpload'
 import ProcessingStepper from './components/ProcessingStepper'
 import AppealLetterViewer from './components/AppealLetterViewer'
 import ExtractedCodesPanel from './components/ExtractedCodesPanel'
+import ApiKeyModal from './components/ApiKeyModal'
 import { AppShell, StageProgress } from './components/layout'
 import { Button } from './components/ui'
 import { useAppealFlow, type AppealInput } from './hooks/useAppealFlow'
+import { getConfigStatus } from './lib/api'
 import { PROCESSING_STEPS } from './lib/steps'
 import { normalizeCodes } from './lib/types'
 import type { AppealResponse } from './lib/types'
@@ -15,6 +17,19 @@ function App() {
   const { state } = flow
 
   const [lastInput, setLastInput] = useState<AppealInput | null>(null)
+  const [needsApiKey, setNeedsApiKey] = useState(false)
+
+  useEffect(() => {
+    getConfigStatus()
+      .then((cfg) => {
+        if (!cfg.is_configured) {
+          setNeedsApiKey(true)
+        }
+      })
+      .catch(() => {
+        /* backend might be offline */
+      })
+  }, [])
 
   const handleSubmit = (input: AppealInput) => {
     setLastInput(input)
@@ -34,6 +49,10 @@ function App() {
       isProcessing={isProcessing}
     >
       <div className="flex flex-col gap-8">
+        <ApiKeyModal
+          isOpen={needsApiKey}
+          onConfigSaved={() => setNeedsApiKey(false)}
+        />
         <StageProgress currentStage={state.stage} />
 
         <div className="w-full">

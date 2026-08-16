@@ -48,15 +48,37 @@ Over **60% of legitimate healthcare insurance denials** go unappealed due to adm
 
 ## Quickstart Guide
 
-### Prerequisites
+### Option A: Run with Docker Compose (Recommended)
 
-- **Python 3.11+**
-- **Node.js 18+** / npm
-- **Featherless AI API Key** (or compatible OpenAI-compatible LLM endpoint)
+The easiest way to run the entire system (Frontend + Backend + RAG Engine) is using Docker Compose:
+
+```bash
+docker compose up -d --build
+```
+
+- **Web App**: `http://localhost:5173`
+- **Backend API Docs**: `http://localhost:8000/docs`
+
+> **Note on Initial Setup & API Key Security**:
+> When opening the web app for the first time, an interactive configuration modal will prompt for your **Featherless API Key**. 
+> - **Privacy & Local Storage**: Your API key is stored strictly on your local machine (`.env` volume). It is **never** uploaded to any external database, cloud telemetry, or third-party service.
+> - **No Manual File Edits**: You do not need to create or edit `.env` files manually via terminal or code editor.
+
+To stop the containers:
+```bash
+docker compose down
+```
 
 ---
 
-### 1. Backend Setup
+### Option B: Run Locally (Without Docker)
+
+#### Prerequisites
+- **Python 3.11+**
+- **Node.js 18+** / npm
+- **Featherless AI API Key**
+
+#### 1. Backend Setup
 
 ```bash
 # Navigate to backend
@@ -69,9 +91,6 @@ source .venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
-cp .env.example .env  # Add your FEATHERLESS_API_KEY
-
 # Start backend server
 uvicorn app.main:app --reload --port 8000
 ```
@@ -79,9 +98,7 @@ uvicorn app.main:app --reload --port 8000
 - API Docs (Swagger UI): `http://localhost:8000/docs`
 - Health Endpoint: `http://localhost:8000/health`
 
----
-
-### 2. Frontend Setup
+#### 2. Frontend Setup
 
 ```bash
 # Navigate to frontend
@@ -90,14 +107,19 @@ cd frontend
 # Install packages
 npm install
 
-# Configure environment
-cp .env.example .env
-
 # Launch Vite development server
 npm run dev
 ```
 
 - Web Interface: `http://localhost:5173`
+
+---
+
+## Security & Data Privacy
+
+- **Local-First Configuration**: All API keys and environment variables reside exclusively in your local environment.
+- **Zero Remote Storage**: No credentials, patient data, or documents are persisted to external databases.
+- **HIPAA-Conscious Architecture**: Ingestion and RAG search are performed in memory and local vector storage.
 
 ---
 

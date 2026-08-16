@@ -1,6 +1,5 @@
 import logging
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
-from typing import Optional
 
 from app.schemas.appeal import AppealCreate, AppealResponse
 from app.services.appeal import appeal_service
@@ -11,7 +10,7 @@ router = APIRouter(prefix="/appeal", tags=["appeal"])
 
 
 @router.post("/generate", response_model=AppealResponse)
-async def generate_appeal(payload: AppealCreate):
+async def generate_appeal(payload: AppealCreate) -> AppealResponse:
     try:
         return await appeal_service.generate_appeal(payload)
     except Exception as e:
@@ -21,14 +20,14 @@ async def generate_appeal(payload: AppealCreate):
 
 @router.post("/generate-from-files", response_model=AppealResponse)
 async def generate_appeal_from_files(
-    denial_file: Optional[UploadFile] = File(None),
-    medical_record_file: Optional[UploadFile] = File(None),
-    patient_name: Optional[str] = Form(None),
-    insurer_name: Optional[str] = Form(None),
-    additional_notes: Optional[str] = Form(""),
-):
+    denial_file: UploadFile | None = File(None),
+    medical_record_file: UploadFile | None = File(None),
+    patient_name: str | None = Form(None),
+    insurer_name: str | None = Form(None),
+    additional_notes: str | None = Form(""),
+) -> AppealResponse:
     try:
-        denial_text = "" 
+        denial_text = ""
         medical_record_text = ""
 
         if denial_file:
@@ -44,7 +43,7 @@ async def generate_appeal_from_files(
             medical_record_text=medical_record_text,
             patient_name=patient_name,
             insurer_name=insurer_name,
-            additional_notes=additional_notes,
+            additional_notes=additional_notes or "",
         )
 
         return await appeal_service.generate_appeal(payload)
