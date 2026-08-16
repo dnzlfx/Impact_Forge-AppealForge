@@ -9,21 +9,29 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+function normalizeWhitespace(value: string): string {
+  return value.replace(/\s+/g, ' ').trim()
+}
+
 /**
  * Divide un texto en fragmentos, marcando cada claim_text del auditor que
- * coincida como substring exacto (case-insensitive). Si el backend llega a
- * devolver offsets en vez de substring, este es el único sitio a tocar.
+ * coincida como substring exacto o normalizado (case-insensitive).
  */
 export function splitByFlags(text: string, flags: AuditFlag[]): Segment[] {
-  const markers: Array<{ index: number; end: number }> = []
+  const markers: Array<{ index: number; end: number; flag: AuditFlag }> = []
 
   for (const flag of flags) {
-    const phrase = flag.claim_text
+    const rawPhrase = flag.claim_text
+    if (!rawPhrase) continue
+    const phrase = normalizeWhitespace(rawPhrase)
     if (!phrase) continue
-    const regex = new RegExp(escapeRegExp(phrase), 'ig')
+
+    // Primero intentamos match directo tolerando múltiples espacios
+    const flexPattern = escapeRegExp(phrase).replace(/\\ /g, '\\s+')
+    const regex = new RegExp(flexPattern, 'ig')
     let match: RegExpExecArray | null
     while ((match = regex.exec(text)) !== null) {
-      markers.push({ index: match.index, end: match.index + phrase.length })
+      markers.push({ index: match.index, end: match.index + match[0].length, flag })
       if (match.index === regex.lastIndex) regex.lastIndex++
     }
   }
@@ -39,9 +47,8 @@ export function splitByFlags(text: string, flags: AuditFlag[]): Segment[] {
     if (marker.index > cursor) {
       segments.push({ text: text.slice(cursor, marker.index) })
     }
-    const phrase = text.slice(marker.index, marker.end)
-    const flag = flags.find((f) => f.claim_text.toLowerCase() === phrase.toLowerCase())
-    segments.push({ text: phrase, flag })
+    const matchedText = text.slice(marker.index, marker.end)
+    segments.push({ text: matchedText, flag: marker.flag })
     cursor = marker.end
   }
   if (cursor < text.length) {
