@@ -29,9 +29,6 @@ type FlowAction =
   | { type: 'ERROR'; message: string }
   | { type: 'RESET' }
 
-const PROCESSING_STEPS_LENGTH = 4
-const PROCESSING_DELAY_MS = 350
-
 const initialState: FlowState = {
   stage: 'idle',
   activeStep: 0,
@@ -59,9 +56,6 @@ function flowReducer(state: FlowState, action: FlowAction): FlowState {
   }
 }
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
 
 /**
  * Orquesta el flujo de la apelación como una máquina de estados simple.
@@ -82,14 +76,21 @@ export function useAppealFlow() {
     dispatch({ type: 'GENERATE_START' })
 
     try {
+      // Iniciar llamada real al backend
       const resultPromise = generateAppeal(input)
 
-      for (let i = 0; i < PROCESSING_STEPS_LENGTH - 1; i++) {
-        await sleep(PROCESSING_DELAY_MS)
-        dispatch({ type: 'STEP_ADVANCE', next: i + 1 })
-      }
+      // Animar los pasos mientras la IA responde
+      const timer = setInterval(() => {
+        dispatch({
+          type: 'STEP_ADVANCE',
+          next: Math.min(2, 1),
+        })
+      }, 500)
 
       const result = await resultPromise
+      clearInterval(timer)
+
+      dispatch({ type: 'STEP_ADVANCE', next: 3 })
       dispatch({ type: 'SUCCESS', result: result.data, isMock: result.isMock })
     } catch (err) {
       dispatch({
@@ -98,6 +99,7 @@ export function useAppealFlow() {
       })
     }
   }
+
 
   const reset = () => dispatch({ type: 'RESET' })
 
