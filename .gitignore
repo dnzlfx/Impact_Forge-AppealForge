@@ -4,6 +4,11 @@ __pycache__/
 .venv/
 backend/data/
 
+# Logs temporales
+*.log
+logs/
+/tmp/appealforge_logs/
+
 # Binarios / instaladores
 *.msi
 *.exe
@@ -29,11 +34,13 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+.playwright-mcp/
 
 # Beads / Dolt files
 .dolt/
 *.db
 .beads-credential-key
 .beads/
+
 
 
