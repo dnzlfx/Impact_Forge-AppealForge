@@ -28,6 +28,7 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+.playwright-mcp/
 
 # Graphify & AI tooling
 graphify-out/
@@ -36,4 +37,5 @@ graphify-out/
 .serena/
 .claude/
 .opencode/
+
 
