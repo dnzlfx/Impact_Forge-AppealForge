@@ -1,3 +1,5 @@
+import tempfile
+import os
 from pathlib import Path
 from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException
@@ -35,11 +37,13 @@ async def setup_config(req: SaveConfigRequest):
     
     env_content = f"FEATHERLESS_API_KEY={api_key}\nFEATHERLESS_BASE_URL={base_url}\n"
     
-    # Escribir únicamente en la ruta canónica del entorno
+    # Escribir de forma atómica usando archivo temporal + rename
     try:
         ENV_PATH.parent.mkdir(parents=True, exist_ok=True)
-        with open(ENV_PATH, "w", encoding="utf-8") as f:
-            f.write(env_content)
+        with tempfile.NamedTemporaryFile("w", dir=ENV_PATH.parent, delete=False, encoding="utf-8") as tf:
+            tf.write(env_content)
+            temp_name = tf.name
+        os.replace(temp_name, ENV_PATH)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to persist configuration: {e}")
     
@@ -48,3 +52,4 @@ async def setup_config(req: SaveConfigRequest):
     settings.FEATHERLESS_BASE_URL = base_url
     
     return {"status": "ok", "message": "Configuration saved to .env"}
+
