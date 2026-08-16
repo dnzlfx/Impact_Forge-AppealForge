@@ -31,4 +31,6 @@ class AppealResponse(BaseModel):
     codes_detected: Dict[str, List[str]]
     rag_citations: List[RagCitation]
     audit_flags: List[AuditFlag]
+    generation_logs: Optional[List[str]] = Field(default_factory=list, description="Execution and AI audit step logs")
     status: str = "completed"
+

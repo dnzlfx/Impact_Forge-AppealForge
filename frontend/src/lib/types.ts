@@ -42,8 +42,10 @@ export interface AppealResponse {
   codes_detected: CodesDetected
   rag_citations: RagCitation[]
   audit_flags: AuditFlag[]
+  generation_logs?: string[]
   status: string
 }
+
 
 export interface ExtractedCode {
   type: 'CPT' | 'ICD-10'

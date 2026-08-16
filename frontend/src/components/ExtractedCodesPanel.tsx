@@ -18,12 +18,14 @@ interface ExtractedCodesPanelProps {
   codes: ExtractedCode[]
   citations?: RagCitation[]
   guidesUsed?: number
+  logs?: string[]
 }
 
 export default function ExtractedCodesPanel({
   codes,
   citations = [],
   guidesUsed,
+  logs = [],
 }: ExtractedCodesPanelProps) {
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
 
@@ -48,7 +50,7 @@ export default function ExtractedCodesPanel({
           <Badge variant="accent">Medicare LCD / NCD Grounding</Badge>
         </div>
         <CardDescription>
-          Validated diagnostic codes, procedure classifications, and official CMS coverage determinations retrieved for this appeal.
+          Validated diagnostic codes, procedure classifications, official CMS coverage determinations, and execution logs.
         </CardDescription>
       </CardHeader>
 
@@ -64,7 +66,11 @@ export default function ExtractedCodesPanel({
             <TabsTrigger value="citations">
               CMS Citations ({citations.length || guidesUsed || 0})
             </TabsTrigger>
+            <TabsTrigger value="logs">
+              AI Audit Logs ({logs.length})
+            </TabsTrigger>
           </TabsList>
+
 
           <TabsContent value="cpt" className="mt-4">
             {cptCodes.length === 0 ? (
@@ -179,8 +185,32 @@ export default function ExtractedCodesPanel({
               </div>
             )}
           </TabsContent>
+
+          <TabsContent value="logs" className="mt-4">
+            {logs.length === 0 ? (
+              <div className="flex flex-col items-center justify-center p-6 text-center text-xs text-mid rounded-[4px] border border-border bg-subtle/20">
+                No execution trace logs recorded for this appeal.
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2 rounded-[4px] border border-border bg-deep/95 p-4 font-mono text-xs text-canvas">
+                <div className="flex items-center justify-between pb-2 border-b border-white/10 text-[11px] text-canvas/60">
+                  <span>Pipeline Execution Trace</span>
+                  <span>{logs.length} events logged</span>
+                </div>
+                <div className="flex flex-col gap-1.5 pt-1 overflow-x-auto">
+                  {logs.map((log, idx) => (
+                    <div key={idx} className="leading-relaxed flex items-start gap-2">
+                      <span className="text-accent shrink-0 select-none">&gt;</span>
+                      <span className="text-canvas/90">{log}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
   )
 }
+
