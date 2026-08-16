@@ -1,0 +1,12 @@
+NCD 150.2 - Spinal Surgery for Disc Herniation and Degenerative Conditions
+
+Indications and Limitations of Coverage. Surgical intervention for herniated lumbar or cervical disc and related degenerative conditions is considered medically reasonable and necessary when ALL of the following criteria are met:
+
+1. The patient has radiculopathy or myelopathy with symptoms corresponding to the level of the disc herniation, supported by objective neurologic examination findings.
+2. Imaging studies (MRI, CT myelography) confirm the presence of disc herniation or nerve root compression correlating with the clinical findings.
+3. An adequate trial of conservative therapy (typically 4 to 6 weeks of physical therapy, analgesics, and anti-inflammatory agents) has failed, OR the patient has a progressive neurologic deficit, cauda equina syndrome, or severe incapacitating pain warranting urgent surgical decompression.
+4. The expected outcome of surgery includes improvement in neurologic function or resolution of incapacitating symptoms.
+
+Documentation Requirements. The medical record must document the neurologic examination, the imaging findings, the duration and results of conservative therapy, and the specific indication for surgery. The operative report must describe the pathology addressed.
+
+Non-covered Indications. Surgery performed in the absence of documented radiculopathy or myelopathy, for non-specific low back pain without a definable surgical lesion, or without a trial of conservative therapy in the absence of urgent indications is not reasonable and necessary. Laminectomy or discectomy performed solely for the purpose of pain control without objective evidence of neural compression is not covered.

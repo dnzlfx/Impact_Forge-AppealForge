@@ -1,0 +1,12 @@
+NCD 220.11 - Stress Testing for Ischemic Heart Disease
+
+Indications and Limitations of Coverage. Exercise stress testing is covered when used to evaluate patients with suspected or known coronary artery disease (CAD) in whom the results are expected to guide clinical management. Medically appropriate indications include:
+
+1. Evaluation of chest pain syndromes suggestive of angina, especially when the diagnosis is uncertain based on history, physical examination, and resting electrocardiography.
+2. Assessment of functional capacity and risk stratification in patients with known CAD, prior myocardial infarction, or following revascularization procedures when there has been a change in clinical status.
+3. Pre-operative cardiac risk assessment before major non-cardiac surgery in patients with poor functional capacity and multiple cardiac risk factors.
+4. Evaluation of exercise-induced arrhythmias, syncope, or symptoms suggestive of an arrhythmic cause.
+
+Coverage Criteria. The test must be performed under the direct supervision of a physician. Pharmacologic stress testing (e.g., adenosine, dobutamine) is covered when the patient is unable to perform adequate exercise. An imaging component (nuclear perfusion imaging or echocardiography) is covered when resting ECG abnormalities preclude accurate interpretation of the ECG portion, or when additional localization information is needed.
+
+Documentation Requirements. The medical record must document the clinical indication, the specific test ordered, the resting ECG findings, and the reason an imaging modality is required when used.

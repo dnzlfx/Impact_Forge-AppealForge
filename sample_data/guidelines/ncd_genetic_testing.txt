@@ -1,0 +1,12 @@
+NCD 190.16 - Genetic Testing for Suspected Hereditary Cancer Syndromes
+
+Indications and Limitations of Coverage. Genetic testing for hereditary cancer syndromes, including but not limited to BRCA1/BRCA2 for breast and ovarian cancer, Lynch syndrome genes for colorectal and endometrial cancer, and other high-penetrance cancer susceptibility genes, is considered medically reasonable and necessary when ALL of the following criteria are met:
+
+1. The patient has a personal or family history consistent with the hereditary syndrome being tested, including early-onset cancer, multiple primary cancers, or multiple affected family members across generations.
+2. The test result is expected to change the clinical management of the patient or their at-risk family members.
+3. The test is performed following pre-test genetic counseling that addresses the risks, benefits, and limitations of testing.
+4. The specific genetic test ordered is the most efficient and clinically appropriate test for the clinical scenario.
+
+Documentation Requirements. The medical record must document the personal and family cancer history, the specific syndrome suspected, the pretest counseling provided, and how the results will guide management.
+
+Non-covered Indications. Population screening in the absence of personal or family history suggestive of an inherited syndrome, and testing performed without documented clinical indication or counseling, are not reasonable and necessary. Direct-to-consumer genetic tests that have not been validated for clinical use are not covered.

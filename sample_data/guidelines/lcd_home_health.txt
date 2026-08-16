@@ -1,0 +1,14 @@
+LCD L37263 - Home Health Services
+
+Indications and Limitations of Coverage. Home health services are covered when the following four conditions are met:
+
+1. The beneficiary is confined to the home (homebound), meaning the beneficiary has a normal inability to leave the home and leaving requires considerable and taxing effort.
+2. The beneficiary is under the care of a physician, and the services are furnished under a plan of care established and periodically reviewed by a physician.
+3. The beneficiary needs skilled nursing care on an intermittent basis, OR physical therapy, speech-language pathology services, or continued occupational therapy services.
+4. The services are reasonable and necessary for the treatment of the beneficiary's illness or injury.
+
+Skilled Services Criteria. A service is considered skilled when its provision requires the skills of a qualified professional and is needed on an intermittent basis. Skilled nursing services include, but are not limited to, administration of intravenous medications, wound care, catheter care, and patient education that requires the skills of a registered nurse.
+
+Documentation Requirements. The plan of care must include the diagnosis, the types of services needed, the frequency and duration of services, the anticipated goals, and a date for review by the physician. The medical record must document the homebound status, the need for skilled services, and the intermittent nature of the care provided.
+
+Non-covered Services. Custodial care, homemaker services, and services that do not require the skills of a qualified professional are not covered as skilled services.

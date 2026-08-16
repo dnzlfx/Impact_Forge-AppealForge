@@ -1,0 +1,12 @@
+NCD 150.4 - Recombinant Bone Morphogenetic Protein (rhBMP) in Spinal Fusion
+
+Indications and Limitations of Coverage. Recombinant bone morphogenetic protein (rhBMP-2) is considered medically reasonable and necessary for anterior lumbar interbody fusion (ALIF) of the lumbar spine when ALL of the following criteria are met:
+
+1. The patient has a documented diagnosis of degenerative disc disease or other condition requiring lumbar fusion with an established indication for the surgery.
+2. The fusion is performed via an anterior approach at a single lumbar level (L4-L5 or L5-S1).
+3. The rhBMP-2 is used as a bone graft substitute in the spinal fusion cage.
+4. The patient does not have contraindications to the use of rhBMP, including active malignancy, recent radiotherapy, or an active infection at the surgical site.
+
+Documentation Requirements. The medical record must document the indication for the fusion, the surgical approach, the level(s) fused, and the rationale for the use of rhBMP rather than autologous bone graft.
+
+Non-covered Indications. Use of rhBMP-2 in the cervical spine, in posterior approaches, in multilevel fusions, in the presence of active tumor or infection, or for conditions without an established indication for fusion is not reasonable and necessary. Use of rhBMP outside FDA-approved indications without documented clinical evidence is not covered.

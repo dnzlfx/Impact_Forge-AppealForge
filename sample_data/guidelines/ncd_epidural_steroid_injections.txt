@@ -1,0 +1,13 @@
+NCD 240.1 - Epidural Steroid Injections
+
+Indications and Limitations of Coverage. Epidural steroid injections (ESI) are considered medically reasonable and necessary for the treatment of radicular pain due to disc herniation, spinal stenosis, or other compressive spinal pathology when all of the following conditions are met:
+
+1. A clearly defined clinical diagnosis of radiculopathy supported by objective neurologic findings or imaging evidence of nerve root compression.
+2. A minimum of 4 to 6 weeks of conservative management (physical therapy, analgesics, anti-inflammatory medications) that has failed to provide adequate relief, or in whom such therapy is contraindicated.
+3. No evidence of red flag conditions such as cauda equina syndrome, progressive motor deficit, or spinal infection requiring surgical or urgent intervention.
+
+Frequency Limitations. In the absence of an intervening exacerbation, a repeat epidural steroid injection is not covered within 3 months of the prior injection. Patients who fail to show meaningful symptomatic improvement after an initial series are generally not candidates for additional injection series.
+
+Documentation Requirements. The medical record must document the indication for the injection, the level to be injected, prior conservative therapy, and the patient's response to prior injections. The service must be consistent with the results of diagnostic imaging.
+
+Coding Guidance. Epidural injections are reported under the CPT code range 62320-62327 and 64479-64484 depending on the approach and level.
