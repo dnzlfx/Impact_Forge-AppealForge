@@ -1,0 +1,13 @@
+NCD 40.9 - Continuous Glucose Monitoring (CGM) Devices
+
+Indications and Limitations of Coverage. Continuous glucose monitoring (CGM) devices are considered medically reasonable and necessary for the treatment of diabetes mellitus when ALL of the following criteria are met:
+
+1. The beneficiary has diabetes mellitus and the treating practitioner has ordered the device to aid in the treatment.
+2. The beneficiary (or caregiver) is trained in the use of the device and the interpretation of glucose data.
+3. The beneficiary is treated with a therapeutic regimen that includes intensive insulin therapy (multiple daily injections or insulin pump therapy), OR has documented episodes of severe hypoglycemia (level 3 hypoglycemia) requiring the assistance of another person, OR has documented problematic hypoglycemia.
+
+Coverage Criteria. The treating practitioner must document that the device is medically necessary and that the data will be used to adjust the diabetes treatment plan. The frequency of sensor use must be consistent with the manufacturer's indications.
+
+Documentation Requirements. The medical record must document the diabetes diagnosis, the insulin regimen, the presence of problematic hypoglycemia if applicable, and the expected clinical benefit. CGM data must be reviewed by the treating practitioner.
+
+Non-covered Indications. CGM devices used for non-insulin-requiring patients without a documented indication for intensive insulin therapy, or for lifestyle or fitness purposes, are not reasonable and necessary. Routine use in the absence of documented clinical need is not covered.

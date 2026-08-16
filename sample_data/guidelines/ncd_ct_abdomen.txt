@@ -1,0 +1,13 @@
+NCD 220.6 - Computerized Tomography (CT) - Abdominal and Pelvic Scans
+
+Indications and Limitations of Coverage. Computed tomography (CT) of the abdomen and pelvis is considered medically reasonable and necessary when the clinical evaluation does not sufficiently characterize the suspected pathology and the information obtained is expected to affect patient management. Indications include, but are not limited to:
+
+1. Evaluation of known or suspected intra-abdominal or retroperitoneal masses, abscesses, or fluid collections.
+2. Staging and follow-up of malignancy, including lymphoma, colorectal, pancreatic, hepatic, renal, and gynecologic cancers.
+3. Evaluation of acute abdominal conditions such as suspected appendicitis, diverticulitis, bowel obstruction, or mesenteric ischemia when clinical and laboratory findings are inconclusive.
+4. Evaluation of abdominal aortic aneurysm size, morphology, and growth for surveillance or pre-operative planning.
+5. Characterization of findings detected on ultrasound or plain radiography when additional anatomic detail is required.
+
+Documentation Requirements. The medical record must document the indication for the study, the clinical question to be answered, and why the information cannot be obtained by a less costly or less invasive modality. Repeat scans for the same indication within a short interval are not covered absent a change in clinical status.
+
+Non-covered Indications. CT performed as a routine screening examination in the absence of symptoms, signs, or an established diagnosis is not reasonable and necessary. Whole-body screening CT in asymptomatic individuals is not covered.

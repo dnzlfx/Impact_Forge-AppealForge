@@ -1,0 +1,17 @@
+NCD 110.6 - Off-Label Use of Antineoplastic Drugs
+
+Indications and Limitations of Coverage. The Medicare program covers the off-label use of Food and Drug Administration (FDA)-approved antineoplastic drugs when the use is for a medically accepted indication. A medically accepted indication is defined by one of the following:
+
+1. The use is included in one of the standard compendia (e.g., NCCN Drugs & Biologics Compendium, AHFS Drug Information, DrugDex).
+2. The use is supported by published peer-reviewed clinical evidence demonstrating safety and effectiveness for the specific indication.
+3. The use is included in clinical practice guidelines developed by nationally recognized professional organizations.
+
+Conditions of Coverage. All of the following conditions must be met:
+
+1. The drug is FDA-approved, though not necessarily for the specific indication being treated.
+2. The drug is used for the treatment of cancer.
+3. The off-label use is for a medically accepted indication as defined above.
+
+Documentation Requirements. The medical record must document the specific cancer diagnosis, the drug regimen, the evidence or compendium supporting the off-label indication, and the clinical rationale for the choice of therapy. Coverage decisions for off-label uses are made on a case-by-case basis.
+
+Non-covered Indications. Off-label uses of drugs that are not supported by compendia or peer-reviewed evidence, and uses for non-cancer conditions, are not covered under this NCD. Compounded drugs that do not meet FDA quality standards are not covered.

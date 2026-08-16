@@ -1,0 +1,12 @@
+NCD 110.9 - Oncolytic Virus Therapy for Cancer
+
+Indications and Limitations of Coverage. Oncolytic virus therapy is considered medically reasonable and necessary when the use is supported by FDA approval for the specific cancer indication and ALL of the following criteria are met:
+
+1. The patient has a cancer diagnosis for which the oncolytic virus therapy is FDA-approved or is supported by published peer-reviewed evidence of safety and efficacy.
+2. The therapy is administered in accordance with the approved labeling or clinical trial protocol.
+3. The patient has adequate organ function and performance status to receive the therapy.
+4. The treatment is part of a comprehensive cancer care plan and is expected to provide clinical benefit.
+
+Documentation Requirements. The medical record must document the cancer diagnosis and staging, the specific oncolytic agent, the treatment schedule, the evidence supporting the use, and the response assessment plan.
+
+Non-covered Indications. Oncolytic virus therapy for indications without FDA approval or without peer-reviewed evidence of benefit, or when administered outside a clinical trial in the absence of established benefit, is not reasonable and necessary. The therapy must not be investigational in a manner that is excluded from coverage.
