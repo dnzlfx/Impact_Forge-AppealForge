@@ -1,9 +1,6 @@
 /**
- * Contrato del backend real (FastAPI, rama develop).
- * Fuente de verdad: backend/app/schemas/appeal.py y backend/app/api/v1/appeal.py
- *
- * Si backend ajusta el contrato, este es el ÚNICO archivo que debe tocarse
- * (junto con lib/api.ts si cambian rutas o campos de request).
+ * Real backend contract (FastAPI develop branch).
+ * Single source of truth: backend/app/schemas/appeal.py & backend/app/api/v1/appeal.py
  */
 
 export interface AppealCreate {
@@ -28,7 +25,7 @@ export type AuditIssueType =
 export type AuditSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | string
 
 export interface AuditFlag {
-  /** Texto exacto dentro de appeal_text que no está respaldado en el expediente. */
+  /** Exact text in appeal_text unbacked by clinical record. */
   claim_text: string
   issue_type: AuditIssueType
   severity: AuditSeverity
@@ -54,7 +51,7 @@ export interface ExtractedCode {
   status: 'verified'
 }
 
-/** Normalización de codes_detected a la lista plana que consume la UI. */
+/** Normalizes detected codes map into flat list for the UI. */
 export function normalizeCodes(codes: CodesDetected): ExtractedCode[] {
   const cpt = (codes.cpt ?? []).map((code) => ({
     type: 'CPT' as const,

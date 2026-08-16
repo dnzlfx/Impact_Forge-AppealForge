@@ -6,8 +6,8 @@ interface ExtractedCodesPanelProps {
 }
 
 /**
- * Muestra los códigos CPT / ICD-10 extraídos de la denegación con su estado
- * de verificación, y el número de guías clínicas consultadas (RAG).
+ * Displays detected CPT / ICD-10 clinical codes with their verification status,
+ * alongside official clinical coverage citations count (RAG).
  */
 export default function ExtractedCodesPanel({ codes, guidesUsed }: ExtractedCodesPanelProps) {
   const cpt = codes.filter((code) => code.type === 'CPT')
@@ -16,9 +16,9 @@ export default function ExtractedCodesPanel({ codes, guidesUsed }: ExtractedCode
   return (
     <section aria-labelledby="codes-heading" className="flex flex-col gap-4">
       <h3 id="codes-heading" className="flex items-center gap-2 font-display text-lg font-medium text-deep">
-        Códigos detectados
+        Detected Clinical Codes
         <span className="font-mono text-xs font-normal text-mid">
-          {codes.length} en total
+          {codes.length} total
         </span>
       </h3>
 
@@ -29,7 +29,7 @@ export default function ExtractedCodesPanel({ codes, guidesUsed }: ExtractedCode
 
       {guidesUsed !== undefined && (
         <p className="font-mono text-xs text-mid">
-          {guidesUsed} guía{guidesUsed === 1 ? '' : 's'} oficial{guidesUsed === 1 ? '' : 'es'} consultada{guidesUsed === 1 ? '' : 'as'} (RAG)
+          {guidesUsed} official guideline{guidesUsed === 1 ? '' : 's'} referenced (RAG)
         </p>
       )}
     </section>
@@ -41,7 +41,7 @@ function renderGroup(type: 'CPT' | 'ICD-10', codes: ExtractedCode[]) {
     <div className="flex flex-col gap-2">
       <p className="text-xs font-semibold uppercase tracking-wide text-mid">{type}</p>
       {codes.length === 0 ? (
-        <p className="text-xs text-mid">Sin códigos {type} detectados.</p>
+        <p className="text-xs text-mid">No {type} codes detected.</p>
       ) : (
         <ul className="flex flex-wrap gap-2">
           {codes.map((code) => (

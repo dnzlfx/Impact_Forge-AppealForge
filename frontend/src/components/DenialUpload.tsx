@@ -3,7 +3,7 @@ import type { ChangeEvent, DragEvent } from 'react'
 import type { AppealInput } from '../hooks/useAppealFlow'
 
 interface DenialUploadProps {
-  /** Se llama con el formulario completo cuando el usuario pulsa "Generar apelación". */
+  /** Called with full form payload when user clicks "Generate Appeal". */
   onSubmit: (input: AppealInput) => void
 }
 
@@ -18,9 +18,8 @@ function isPdf(file: File): boolean {
 }
 
 /**
- * Dropzone de un solo PDF (click + drag & drop) con validación de tipo,
- * y un expediente médico opcional + metadatos del paciente. Puramente
- * controlado por props: el único botón actúa como submit del formulario.
+ * Dropzone for denial letter PDF with type validation,
+ * optional clinical chart upload and patient metadata.
  */
 export default function DenialUpload({ onSubmit }: DenialUploadProps) {
   const denialInputRef = useRef<HTMLInputElement>(null)
@@ -37,7 +36,7 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
   const handleDenialChange = useCallback((file: File | undefined | null) => {
     if (!file) return
     if (!isPdf(file)) {
-      setInvalid('El archivo debe ser un PDF.')
+      setInvalid('File must be a valid PDF.')
       return
     }
     setInvalid(null)
@@ -75,19 +74,19 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
     <section aria-labelledby="upload-heading" className="flex flex-col gap-6">
       <header>
         <h2 id="upload-heading" className="font-display text-2xl font-medium text-deep sm:text-3xl">
-          Sube tu carta de denegación
+          Upload Your Denial Letter
         </h2>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-mid">
-          AppealForge lee el PDF, extrae el motivo del rechazo y los códigos médicos,
-          redacta la carta de apelación con respaldo en guías de CMS y la audita con
-          un modelo independiente antes de que la revises.
+          AppealForge parses your denial letter, extracts rejection reasons and clinical codes,
+          drafts a rigorous appeal grounded in official CMS guidelines, and audits every claim
+          with an independent fact-checking model.
         </p>
       </header>
 
       <div
         role="button"
         tabIndex={0}
-        aria-label="Subir PDF de la carta de denegación"
+        aria-label="Upload denial letter PDF"
         onClick={() => denialInputRef.current?.click()}
         onKeyDown={(event) => {
           if (event.key === 'Enter' || event.key === ' ') {
@@ -117,7 +116,7 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
               }}
               className="mt-1 rounded-[3px] border border-deep/20 px-3 py-1.5 text-xs font-medium text-deep transition-colors hover:bg-deep hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
-              Quitar archivo
+              Remove file
             </button>
           </>
         ) : (
@@ -137,9 +136,9 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
               />
             </svg>
             <p className="text-sm font-medium text-deep">
-              Haz clic o arrastra la carta de denegación aquí
+              Click or drag and drop your denial letter PDF here
             </p>
-            <p className="text-xs text-mid">Solo un archivo PDF · sin límite de tamaño</p>
+            <p className="text-xs text-mid">PDF document format supported</p>
           </>
         )}
 
@@ -164,7 +163,7 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
           <svg className="h-4 w-4 text-mid" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
-          Expediente médico y contexto (opcional, mejora la auditoría)
+          Patient Medical Chart & Additional Context (Optional, improves audit accuracy)
           <span className="ml-auto font-mono text-xs text-mid transition-transform group-open:rotate-180">
             ▾
           </span>
@@ -181,7 +180,7 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
                 <span className="ml-2 font-mono text-xs text-mid">{formatBytes(recordFile.size)}</span>
               </span>
             ) : (
-              <span>Agregar expediente médico (PDF opcional)</span>
+              <span>Attach patient medical record (Optional PDF)</span>
             )}
             <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -199,18 +198,20 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
           />
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1 text-xs font-medium text-mid">
-              Nombre del paciente
+              Patient Full Name
               <input
                 type="text"
+                placeholder="e.g. Jane Doe"
                 value={patientName}
                 onChange={(event) => setPatientName(event.target.value)}
                 className="rounded-[3px] border border-lilac bg-white px-3 py-2 text-sm text-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               />
             </label>
             <label className="flex flex-col gap-1 text-xs font-medium text-mid">
-              Aseguradora
+              Insurance Company Name
               <input
                 type="text"
+                placeholder="e.g. Aetna / UnitedHealthcare"
                 value={insurerName}
                 onChange={(event) => setInsurerName(event.target.value)}
                 className="rounded-[3px] border border-lilac bg-white px-3 py-2 text-sm text-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
@@ -218,8 +219,9 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
             </label>
           </div>
           <label className="flex flex-col gap-1 text-xs font-medium text-mid">
-            Notas adicionales
+            Additional Clinical Notes / Directives
             <textarea
+              placeholder="e.g. Focus on failure of conservative physical therapy over 8 weeks..."
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
               rows={2}
@@ -235,7 +237,7 @@ export default function DenialUpload({ onSubmit }: DenialUploadProps) {
         disabled={!denialFile}
         className="flex h-12 w-full items-center justify-center gap-2 rounded-[3px] bg-deep px-6 text-sm font-semibold text-white transition-colors hover:bg-mid focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto sm:px-8"
       >
-        Generar apelación
+        Generate Appeal Letter
       </button>
     </section>
   )

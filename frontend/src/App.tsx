@@ -27,7 +27,7 @@ function App() {
     <div className="flex min-h-dvh flex-col">
       <header className="border-b border-lilac/60 bg-white/80">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
-          <a href="/" className="flex items-center gap-2.5" aria-label="AppealForge — inicio">
+          <a href="/" className="flex items-center gap-2.5" aria-label="AppealForge — Home">
             <svg className="h-8 w-8" viewBox="0 0 32 32" fill="none" aria-hidden="true">
               <rect width="32" height="32" rx="6" className="fill-deep" />
               <path
@@ -41,7 +41,7 @@ function App() {
             <span className="font-display text-xl font-semibold text-deep">AppealForge</span>
           </a>
           <span className="hidden font-mono text-[11px] uppercase tracking-wider text-mid sm:block">
-            Apelaciones de seguros médicos
+            Healthcare Insurance Appeals AI
           </span>
         </div>
       </header>
@@ -60,7 +60,7 @@ function App() {
 
           {state.stage === 'error' && (
             <ErrorView
-              message={state.error ?? 'Ocurrió un error desconocido'}
+              message={state.error ?? 'An unexpected error occurred'}
               onRetry={handleRetry}
               onReset={flow.reset}
             />
@@ -70,7 +70,7 @@ function App() {
 
       <footer className="border-t border-lilac/60 py-6">
         <p className="mx-auto max-w-5xl px-4 font-mono text-[11px] text-mid sm:px-6">
-          Hackaton 24h · AppealForge · Las citas deben verificarse contra las guías oficiales de CMS.
+          Impact Forge Hackathon · AppealForge · Clinical citations must be verified against official CMS guidelines.
         </p>
       </footer>
     </div>
@@ -86,19 +86,19 @@ function ReviewView({ result, isMock, onReset }: { result: AppealResponse; isMoc
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 id="review-heading" className="font-display text-2xl font-medium text-deep">
-            Revisión de tu apelación
+            Appeal Review & Audit
           </h2>
           <p className="mt-1 text-sm text-mid">
             {result.audit_flags.length === 0
-              ? 'La carta está lista y sin marcas de auditoría.'
-              : `${result.audit_flags.length} frase${result.audit_flags.length === 1 ? '' : 's'} sin respaldo — revisa antes de descargar.`}
+              ? 'Your appeal letter is complete and cleared by the clinical audit.'
+              : `${result.audit_flags.length} claim${result.audit_flags.length === 1 ? '' : 's'} require verification — review highlighted flags below.`}
           </p>
           {isMock && (
             <span className="mt-2 inline-flex items-center gap-1.5 rounded-[3px] border border-lilac bg-sky/40 px-3 py-1.5 font-mono text-[11px] text-mid">
               <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
               </svg>
-              Datos de ejemplo — backend no disponible
+              Demo Mock Mode — Backend offline
             </span>
           )}
         </div>
@@ -110,7 +110,7 @@ function ReviewView({ result, isMock, onReset }: { result: AppealResponse; isMoc
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
           </svg>
-          Empezar de nuevo
+          Start New Appeal
         </button>
       </header>
 
@@ -126,7 +126,7 @@ function ReviewView({ result, isMock, onReset }: { result: AppealResponse; isMoc
           {result.rag_citations.length > 0 && (
             <section aria-labelledby="citations-heading" className="flex flex-col gap-3">
               <h3 id="citations-heading" className="font-display text-lg font-medium text-deep">
-                Guías consultadas
+                Referenced Guidelines
               </h3>
               <ul className="flex flex-col gap-2">
                 {result.rag_citations.map((citation, i) => (
@@ -167,11 +167,11 @@ function ErrorView({
         />
       </svg>
       <h2 id="error-heading" className="font-display text-xl font-semibold text-deep">
-        No se pudo generar la apelación
+        Unable to Generate Appeal Letter
       </h2>
       <p className="text-sm leading-relaxed text-mid">{message}</p>
       <p className="font-mono text-[11px] text-mid">
-        Tu archivo se conserva: reintenta sin volver a subirlo.
+        Your uploaded documents are preserved: retry without re-uploading.
       </p>
       <div className="mt-2 flex flex-col gap-3 sm:flex-row">
         <button
@@ -179,14 +179,14 @@ function ErrorView({
           onClick={onRetry}
           className="flex h-11 items-center justify-center rounded-[3px] bg-deep px-6 text-sm font-semibold text-white transition-colors hover:bg-mid focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
-          Reintentar
+          Retry
         </button>
         <button
           type="button"
           onClick={onReset}
           className="flex h-11 items-center justify-center rounded-[3px] border border-deep/30 px-6 text-sm font-medium text-deep transition-colors hover:border-deep focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
-          Empezar de nuevo
+          Start New Appeal
         </button>
       </div>
     </section>

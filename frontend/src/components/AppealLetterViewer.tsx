@@ -12,7 +12,7 @@ function downloadAppealText(text: string): void {
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = 'appealforge-apelacion.txt'
+  link.download = 'appealforge-appeal-letter.txt'
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
@@ -20,8 +20,8 @@ function downloadAppealText(text: string): void {
 }
 
 /**
- * Viewer de la carta de apelación. Marca cada frase auditada sin respaldo con
- * estilo de flag y un tooltip accesible por hover Y por teclado (tabindex).
+ * Appeal letter viewer. Highlights audited unverified claims
+ * with accessible flag styling and interactive tooltips (hover + focus).
  */
 export default function AppealLetterViewer({ appealText, flags }: AppealLetterViewerProps) {
   const paragraphs = useMemo(
@@ -39,9 +39,9 @@ export default function AppealLetterViewer({ appealText, flags }: AppealLetterVi
   }, [openTooltip])
 
   return (
-    <article aria-label="Carta de apelación generada" className="flex flex-col gap-4">
+    <article aria-label="Generated appeal letter" className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="font-display text-xl font-medium text-deep">Borrador de la apelación</h2>
+        <h2 className="font-display text-xl font-medium text-deep">Appeal Letter Draft</h2>
         <button
           type="button"
           onClick={() => downloadAppealText(appealText)}
@@ -50,7 +50,7 @@ export default function AppealLetterViewer({ appealText, flags }: AppealLetterVi
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
           </svg>
-          Descargar (.txt)
+          Download (.txt)
         </button>
       </div>
 
@@ -91,7 +91,7 @@ export default function AppealLetterViewer({ appealText, flags }: AppealLetterVi
 
         {flags.length === 0 && (
           <p className="rounded-[3px] border border-lilac bg-sky/40 px-4 py-3 text-sm text-mid">
-            Sin marcas de auditoría: todas las afirmaciones tienen respaldo en el expediente.
+            Clean clinical audit: all claims and factual statements are verified in the clinical chart.
           </p>
         )}
       </div>

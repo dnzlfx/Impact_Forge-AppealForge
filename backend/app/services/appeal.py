@@ -43,16 +43,16 @@ class AppealService:
         ) or "No guidelines retrieved."
 
         user_content = (
-            f"DATOS DE ENTRADA:\n"
-            f"Paciente: {payload.patient_name or 'No especificado'}\n"
-            f"Aseguradora: {payload.insurer_name or 'No especificada'}\n"
-            f"Códigos CPT detectados: {', '.join(codes.get('cpt', [])) or 'No detectados'}\n"
-            f"Códigos ICD-10 detectados: {', '.join(codes.get('icd10', [])) or 'No detectados'}\n\n"
-            f"CARTA DE DENEGACIÓN:\n{payload.denial_letter_text}\n\n"
-            f"EXPEDIENTE CLÍNICO:\n{payload.medical_record_text}\n\n"
-            f"GUÍAS CLÍNICAS APLICABLES:\n{guidelines_text}\n\n"
-            f"NOTAS ADICIONALES:\n{payload.additional_notes or 'Ninguna'}\n\n"
-            f"Redacta la carta de apelación formal siguiendo la estructura exigida."
+            f"INPUT DATA:\n"
+            f"Patient Name: {payload.patient_name or 'Not specified'}\n"
+            f"Insurance Company: {payload.insurer_name or 'Not specified'}\n"
+            f"Detected CPT Codes: {', '.join(codes.get('cpt', [])) or 'None detected'}\n"
+            f"Detected ICD-10 Codes: {', '.join(codes.get('icd10', [])) or 'None detected'}\n\n"
+            f"DENIAL LETTER TEXT:\n{payload.denial_letter_text}\n\n"
+            f"PATIENT MEDICAL RECORD:\n{payload.medical_record_text}\n\n"
+            f"RELEVANT CLINICAL GUIDELINES:\n{guidelines_text}\n\n"
+            f"ADDITIONAL INSTRUCTIONS:\n{payload.additional_notes or 'None'}\n\n"
+            f"Draft the formal insurance appeal letter following the required structure."
         )
 
         return await self._call_llm(WRITER_SYSTEM_PROMPT, user_content)
@@ -61,9 +61,9 @@ class AppealService:
         self, draft_text: str, medical_record_text: str
     ) -> List[AuditFlag]:
         user_content = (
-            f"EXPEDIENTE MÉDICO ORIGINAL:\n{medical_record_text}\n\n"
-            f"BORRADOR DE LA CARTA DE APELACIÓN A AUDITAR:\n{draft_text}\n\n"
-            f"Contrasta el borrador contra el expediente y devuelve el JSON de flags."
+            f"ORIGINAL MEDICAL RECORD:\n{medical_record_text}\n\n"
+            f"DRAFT APPEAL LETTER TO AUDIT:\n{draft_text}\n\n"
+            f"Cross-examine the appeal draft against the medical record and return the JSON flags."
         )
 
         audit_raw = await self._call_llm(AUDITOR_SYSTEM_PROMPT, user_content, model=self.auditor_model)

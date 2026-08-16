@@ -4,7 +4,7 @@ from typing import Dict, List
 from openai import AsyncOpenAI
 
 from app.core.config import settings
-from app.core.prompts import AUDITOR_SYSTEM_PROMPT, WRITER_PROOFREADER_SYSTEM_PROPMT
+from app.core.prompts import AUDITOR_SYSTEM_PROMPT, WRITER_PROOFREADER_SYSTEM_PROMPT
 from app.schemas.appeal import AppealCreate, AppealResponse, AuditFlag, RagCitation
 from app.services.pdf_parser import extract_medical_codes
 from app.services.rag_engine import rag_engine
@@ -12,7 +12,7 @@ from app.services.rag_engine import rag_engine
 logger = logging.getLogger(__name__)
 
 
-class AppealProffreaderService:
+class AppealProofreaderService:
     def __init__(self):
         self.client = AsyncOpenAI(
             api_key=settings.FEATHERLESS_API_KEY or "dummy-key",
@@ -32,8 +32,9 @@ class AppealProffreaderService:
         )
         return response.choices[0].message.content or ""
 
-    async def _generate_draft(
+    async def proofread_draft(
         self,
+        draft_text: str,
         payload: AppealCreate,
         codes: Dict[str, List[str]],
         citations: List[RagCitation],
@@ -43,27 +44,27 @@ class AppealProffreaderService:
         ) or "No guidelines retrieved."
 
         user_content = (
-            f"DATOS DE ENTRADA:\n"
-            f"Paciente: {payload.patient_name or 'No especificado'}\n"
-            f"Aseguradora: {payload.insurer_name or 'No especificada'}\n"
-            f"Códigos CPT detectados: {', '.join(codes.get('cpt', [])) or 'No detectados'}\n"
-            f"Códigos ICD-10 detectados: {', '.join(codes.get('icd10', [])) or 'No detectados'}\n\n"
-            f"CARTA DE DENEGACIÓN:\n{payload.denial_letter_text}\n\n"
-            f"EXPEDIENTE CLÍNICO:\n{payload.medical_record_text}\n\n"
-            f"GUÍAS CLÍNICAS APLICABLES:\n{guidelines_text}\n\n"
-            f"NOTAS ADICIONALES:\n{payload.additional_notes or 'Ninguna'}\n\n"
-            f"Redacta la carta de apelación formal siguiendo la estructura exigida."
+            f"INPUT DATA:\n"
+            f"Patient Name: {payload.patient_name or 'Not specified'}\n"
+            f"Insurance Company: {payload.insurer_name or 'Not specified'}\n"
+            f"Detected CPT Codes: {', '.join(codes.get('cpt', [])) or 'None detected'}\n"
+            f"Detected ICD-10 Codes: {', '.join(codes.get('icd10', [])) or 'None detected'}\n\n"
+            f"DENIAL LETTER TEXT:\n{payload.denial_letter_text}\n\n"
+            f"PATIENT MEDICAL RECORD:\n{payload.medical_record_text}\n\n"
+            f"RELEVANT CLINICAL GUIDELINES:\n{guidelines_text}\n\n"
+            f"INITIAL DRAFT:\n{draft_text}\n\n"
+            f"Review, polish, and generate the final version of the formal appeal letter."
         )
 
-        return await self._call_llm(WRITER_PROOFREADER_SYSTEM_PROPMT, user_content)
+        return await self._call_llm(WRITER_PROOFREADER_SYSTEM_PROMPT, user_content)
 
     async def _audit_draft(
         self, draft_text: str, medical_record_text: str
     ) -> List[AuditFlag]:
         user_content = (
-            f"EXPEDIENTE MÉDICO ORIGINAL:\n{medical_record_text}\n\n"
-            f"BORRADOR DE LA CARTA DE APELACIÓN A AUDITAR:\n{draft_text}\n\n"
-            f"Contrasta el borrador contra el expediente y devuelve el JSON de flags."
+            f"ORIGINAL MEDICAL RECORD:\n{medical_record_text}\n\n"
+            f"DRAFT APPEAL LETTER TO AUDIT:\n{draft_text}\n\n"
+            f"Cross-examine the appeal draft against the medical record and return the JSON flags."
         )
 
         audit_raw = await self._call_llm(AUDITOR_SYSTEM_PROMPT, user_content, model=self.auditor_model)
@@ -103,7 +104,7 @@ class AppealProffreaderService:
         ).strip()
         citations = rag_engine.query_guidelines(query_text or "Lumbar MRI radiculopathy")
 
-        appeal_text = await self._generate_draft(payload, codes, citations)
+        appeal_text = await self.proofread_draft("", payload, codes, citations)
 
         audit_flags = []
         if payload.medical_record_text.strip():
@@ -117,4 +118,5 @@ class AppealProffreaderService:
         )
 
 
-appealProffreader_service = AppealProffreaderService()
+appealProofreader_service = AppealProofreaderService()
+appealProffreader_service = appealProofreader_service
