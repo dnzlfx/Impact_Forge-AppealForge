@@ -151,3 +151,8 @@ Both backend and frontend contain automated test suites:
 
 Built with pride for **Impact Forge Hackathon 2026**.
 
+## License
+
+This project is licensed under the MIT License with a Clinical AI Disclaimer - see the [LICENSE](LICENSE) file for details.
+
+
