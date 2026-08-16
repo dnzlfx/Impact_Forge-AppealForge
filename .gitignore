@@ -8,8 +8,10 @@ backend/data/
 *.msi
 *.exe
 
-# Tooling local de opencode
+# Tooling local de opencode y agentes
 .opencode/
+.claude/
+.serena/
 opencode.json
 design-skills/
 design-skills.zip
@@ -19,4 +21,11 @@ organizacion_impactforge.pdf
 
 # Graphify
 graphify-out/
+
+
+# Beads / Dolt files
+.dolt/
+*.db
+.beads-credential-key
+.beads/
 
