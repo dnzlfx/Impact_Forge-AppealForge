@@ -29,8 +29,14 @@ class AppealProofreaderService:
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0.2,
+            max_tokens=2048,
         )
-        return response.choices[0].message.content or ""
+        msg = response.choices[0].message
+        content = msg.content or ""
+        if not content and hasattr(msg, "reasoning_content") and msg.reasoning_content:
+            content = msg.reasoning_content
+        return content
+
 
     async def proofread_draft(
         self,
