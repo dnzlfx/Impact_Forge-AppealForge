@@ -1,0 +1,13 @@
+NCD 220.4 - Diagnostic Magnetic Resonance Imaging (MRI)
+
+Indications and Limitations of Coverage. Magnetic resonance imaging (MRI) of the lumbar spine is considered medically reasonable and necessary only when all of the following criteria are met:
+
+1. Clinical signs or symptoms consistent with nerve root compression or spinal cord compromise, including radicular pain, numbness, paresthesias, or motor weakness corresponding to a dermatomal/myotomal distribution.
+2. At least 4 to 6 weeks of documented conservative management (e.g., physical therapy, non-steroidal anti-inflammatory drugs) that has failed to produce clinical improvement, unless there are "red flag" symptoms such as progressive neurologic deficit, cauda equina syndrome, or suspected malignancy or infection, in which case imaging may be performed earlier.
+3. The results of the MRI are expected to change clinical management (e.g., guide surgical decision-making or interventional procedures).
+
+Coding Guidelines. The service must be ordered by a physician or qualified practitioner. The medical record must contain documentation supporting the medical necessity of the study, including the indication for the examination and the findings of prior conservative therapy.
+
+Non-covered Indications. MRI performed solely for screening purposes, routine surveillance in the absence of new symptoms, or for a condition for which conservative treatment has not yet been attempted is not reasonable and necessary.
+
+Coverage Decision. Effective January 1, 1990, the Medicare program covers MRI under the conditions described above. Local Medicare Administrative Contractors may supplement this NCD with additional documentation requirements via Local Coverage Determinations (LCDs).
