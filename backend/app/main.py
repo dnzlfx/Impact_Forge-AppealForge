@@ -1,11 +1,12 @@
-import os
 import logging
 from logging.handlers import RotatingFileHandler
+import os
+import time
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-import time
 
-# Configuración de logs temporales para depuración completa
+from app.api.v1 import api_router
+
 log_dir = "/tmp/appealforge_logs"
 os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, "appealforge.log")
@@ -19,9 +20,6 @@ logging.basicConfig(
     ],
 )
 logger = logging.getLogger("appealforge")
-logger.info(f"AppealForge logging initialized. Log file: {log_file}")
-
-from app.api.v1 import api_router
 
 app = FastAPI(title="AppealForge API", version="1.0.0")
 

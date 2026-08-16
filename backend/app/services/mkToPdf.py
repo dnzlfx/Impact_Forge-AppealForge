@@ -1,11 +1,12 @@
+from pathlib import Path
 import re
 import shutil
-from pathlib import Path
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable, Table, TableStyle
+
 from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.platypus import HRFlowable, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 
 def _clean_md_formatting(text: str) -> str:
@@ -64,7 +65,7 @@ def _markdown_to_pdf_reportlab(md_filepath: Path, output_path: Path):
     story = []
     lines = text.splitlines()
     in_table = False
-    table_rows = []
+    table_rows: list[list[str]] = []
 
     def flush_table():
         nonlocal in_table, table_rows

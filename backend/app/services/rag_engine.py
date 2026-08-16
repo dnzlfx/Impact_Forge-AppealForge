@@ -1,9 +1,11 @@
+import logging
 from pathlib import Path
-from typing import List
 
 import chromadb
 
 from app.schemas.appeal import RagCitation
+
+logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 GUIDELINES_DIR = REPO_ROOT / "sample_data" / "guidelines"
@@ -13,9 +15,9 @@ CHUNK_SIZE = 900
 CHUNK_OVERLAP = 150
 
 
-def _read_guidelines() -> List[tuple[str, str]]:
+def _read_guidelines() -> list[tuple[str, str]]:
     """Read all .txt guidelines from disk -> list of (source_label, full_text)."""
-    sources = []
+    sources: list[tuple[str, str]] = []
     for path in sorted(GUIDELINES_DIR.glob("*.txt")):
         if path.name == "README.txt":
             continue
@@ -25,10 +27,10 @@ def _read_guidelines() -> List[tuple[str, str]]:
     return sources
 
 
-def _chunk_text(text: str) -> List[str]:
+def _chunk_text(text: str) -> list[str]:
     """Split a long guideline into overlapping chunks by paragraph/word."""
     paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
-    chunks: List[str] = []
+    chunks: list[str] = []
     buffer = ""
     for para in paragraphs:
         if len(buffer) + len(para) > CHUNK_SIZE and buffer:
@@ -48,7 +50,9 @@ class RAGEngine:
         self.collection = self.client.get_or_create_collection(name="medical_guidelines")
 
         sources = _read_guidelines()
-        docs, metas, ids = [], [], []
+        docs: list[str] = []
+        metas: list[dict[str, str]] = []
+        ids: list[str] = []
         for source, text in sources:
             for i, chunk in enumerate(_chunk_text(text)):
                 docs.append(chunk)
@@ -64,13 +68,13 @@ class RAGEngine:
                     metadatas=metas,
                     ids=ids,
                 )
-            print(f"[RAG] Indexed {len(docs)} chunks from {len(sources)} guidelines into {DB_DIR}")
+            logger.info(f"Indexed {len(docs)} chunks from {len(sources)} guidelines into {DB_DIR}")
 
-    def query_guidelines(self, query_text: str, n_results: int = 2) -> List[RagCitation]:
+    def query_guidelines(self, query_text: str, n_results: int = 2) -> list[RagCitation]:
         if self.collection.count() == 0:
             return []
         results = self.collection.query(query_texts=[query_text], n_results=n_results)
-        citations = []
+        citations: list[RagCitation] = []
         if results and results["documents"] and results["documents"][0]:
             for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
                 citations.append(RagCitation(source=meta["source"], text=doc))

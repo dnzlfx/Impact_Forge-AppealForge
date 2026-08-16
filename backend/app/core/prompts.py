@@ -46,7 +46,4 @@ Strict rules:
 - Ensure all medical necessity arguments are directly tethered to the retrieved guidelines and medical documentation.
 - Produce a polished, legally sound, and compelling final appeal letter."""
 
-# Alias backward compatibility for typo
-WRITER_PROOFREADER_SYSTEM_PROPMT = WRITER_PROOFREADER_SYSTEM_PROMPT
-
 

@@ -56,6 +56,25 @@ export async function checkHealth(): Promise<{ status: string }> {
   return request<{ status: string }>('/health')
 }
 
+export interface ConfigStatus {
+  is_configured: boolean
+  base_url: string
+}
+
+/** GET /api/v1/config/status — checks if API key is configured */
+export async function getConfigStatus(): Promise<ConfigStatus> {
+  return request<ConfigStatus>('/api/v1/config/status')
+}
+
+/** POST /api/v1/config/setup — saves API key and base url to .env */
+export async function saveConfig(apiKey: string, baseUrl: string = 'https://api.featherless.ai/v1'): Promise<{ status: string }> {
+  return request<{ status: string }>('/api/v1/config/setup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ api_key: apiKey, base_url: baseUrl }),
+  })
+}
+
 /** POST /api/v1/appeal/generate-from-files — uploads denial letter PDF (and optional medical records) */
 export interface AppealResult {
   data: AppealResponse
