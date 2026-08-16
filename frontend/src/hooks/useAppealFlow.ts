@@ -74,12 +74,13 @@ export function useAppealFlow() {
 
   const start = async (input: AppealInput) => {
     dispatch({ type: 'GENERATE_START' })
+    let timer: ReturnType<typeof setInterval> | undefined
 
     try {
       const resultPromise = generateAppeal(input)
 
       let currentStep = 0
-      const timer = setInterval(() => {
+      timer = setInterval(() => {
         if (currentStep < 2) {
           currentStep += 1
           dispatch({ type: 'STEP_ADVANCE', next: currentStep })
@@ -87,11 +88,12 @@ export function useAppealFlow() {
       }, 700)
 
       const result = await resultPromise
-      clearInterval(timer)
+      if (timer) clearInterval(timer)
 
       dispatch({ type: 'STEP_ADVANCE', next: 3 })
       dispatch({ type: 'SUCCESS', result: result.data, isMock: result.isMock })
     } catch (err) {
+      if (timer) clearInterval(timer)
       dispatch({
         type: 'ERROR',
         message: err instanceof Error ? err.message : 'An unexpected error occurred during processing',

@@ -1,10 +1,8 @@
 import React from 'react';
 import { Header } from './Header';
-import type { Stage } from '../../lib/types';
 
 export interface AppShellProps {
   children: React.ReactNode;
-  currentStage?: Stage;
   onNewAppeal?: () => void;
   isProcessing?: boolean;
 }

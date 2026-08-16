@@ -19,6 +19,36 @@ const API_BASE_URL =
 const MOCK_FALLBACK =
   ((import.meta.env.VITE_MOCK_FALLBACK as string | undefined) ?? 'true') === 'true'
 
+const API_KEY_STORAGE_KEY = 'appealforge.featherless_api_key'
+const BASE_URL_STORAGE_KEY = 'appealforge.featherless_base_url'
+
+export function getStoredApiKey(): string | null {
+  return localStorage.getItem(API_KEY_STORAGE_KEY)
+}
+
+export function getStoredBaseUrl(): string | null {
+  return localStorage.getItem(BASE_URL_STORAGE_KEY)
+}
+
+export function storeApiConfig(apiKey: string, baseUrl: string): void {
+  localStorage.setItem(API_KEY_STORAGE_KEY, apiKey)
+  localStorage.setItem(BASE_URL_STORAGE_KEY, baseUrl)
+}
+
+export function clearApiConfig(): void {
+  localStorage.removeItem(API_KEY_STORAGE_KEY)
+  localStorage.removeItem(BASE_URL_STORAGE_KEY)
+}
+
+function featherlessHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {}
+  const apiKey = getStoredApiKey()
+  const baseUrl = getStoredBaseUrl()
+  if (apiKey) headers['X-Featherless-API-Key'] = apiKey
+  if (baseUrl) headers['X-Featherless-Base-URL'] = baseUrl
+  return headers
+}
+
 
 
 class ApiError extends Error {
@@ -99,6 +129,7 @@ export async function generateAppeal(input: {
     const data = await request<AppealResponse>('/api/v1/appeal/generate-from-files', {
       method: 'POST',
       body: form,
+      headers: featherlessHeaders(),
     })
     return { data, isMock: false }
   } catch (err) {

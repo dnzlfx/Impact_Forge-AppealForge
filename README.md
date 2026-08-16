@@ -13,8 +13,8 @@ Over **60% of legitimate healthcare insurance denials** go unappealed due to adm
 1. **Intelligent Document Ingestion**: Parses denial letters and clinical records from PDF format, automatically extracting rejection rationale and clinical codes (CPT, ICD-10).
 2. **RAG-Augmented Coverage Grounding**: Retrieves authoritative National and Local Coverage Determinations (**CMS NCD / LCD**) to substantiate medical necessity.
 3. **Dual-Model Architecture (Drafting + Clinical Audit)**:
-   - **Lead Drafter (`DeepSeek-V4-Flash`)**: Formats an authoritative legal appeal tailored to insurer standards.
-   - **Clinical Auditor (`Qwen3.8-27B`)**: Cross-examines every fact, conservative therapy duration, and symptom in the draft against the raw patient medical records to prevent hallucinations.
+   - **Lead Drafter (`DeepSeek-V4-Pro`)**: Formats an authoritative legal appeal tailored to insurer standards.
+   - **Clinical Auditor (`DeepSeek-V4-Pro`)**: Cross-examines every fact, conservative therapy duration, and symptom in the draft against the raw patient medical records to prevent hallucinations.
 4. **Interactive Flagging & Verification**: Visualizes unbacked claims directly in the UI with severity metrics and source-tethered explanations.
 5. **Multi-Format Export**: Generates submission-ready Markdown and PDF appeal letters.
 

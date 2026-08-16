@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from openai import AsyncOpenAI
 
 from app.core.config import settings
@@ -36,7 +37,7 @@ class AppealProofreaderService:
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0.2,
-            max_tokens=2048,
+            max_tokens=4096,
         )
         msg = response.choices[0].message
         content = msg.content or ""
@@ -45,7 +46,17 @@ class AppealProofreaderService:
                 content = msg.reasoning
             elif hasattr(msg, "reasoning_content") and msg.reasoning_content:
                 content = msg.reasoning_content
-        return content
+
+        cleaned = content.strip()
+        if cleaned.startswith("```markdown"):
+            cleaned = cleaned[11:]
+        elif cleaned.startswith("```md"):
+            cleaned = cleaned[5:]
+        elif cleaned.startswith("```"):
+            cleaned = cleaned[3:]
+        if cleaned.endswith("```"):
+            cleaned = cleaned[:-3]
+        return cleaned.strip()
 
     async def proofread_draft(
         self,
@@ -87,22 +98,18 @@ class AppealProofreaderService:
 
         try:
             cleaned = audit_raw.strip()
-            if cleaned.startswith("```json"):
-                cleaned = cleaned[7:]
-            if cleaned.startswith("```"):
-                cleaned = cleaned[3:]
-            if cleaned.endswith("```"):
-                cleaned = cleaned[:-3]
-            data = json.loads(cleaned.strip())
-            for item in data.get("flags", []):
-                flags.append(
-                    AuditFlag(
-                        claim_text=item.get("claim_text", ""),
-                        issue_type=item.get("issue_type", "UNVERIFIED_IN_RECORD"),
-                        severity=item.get("severity", "MEDIUM"),
-                        explanation=item.get("explanation", ""),
+            match = re.search(r"\{[\s\S]*\}", cleaned)
+            if match:
+                data = json.loads(match.group(0))
+                for item in data.get("flags", []):
+                    flags.append(
+                        AuditFlag(
+                            claim_text=item.get("claim_text", ""),
+                            issue_type=item.get("issue_type", "UNVERIFIED_IN_RECORD"),
+                            severity=item.get("severity", "MEDIUM"),
+                            explanation=item.get("explanation", ""),
+                        )
                     )
-                )
         except Exception as ex:
             logger.warning(f"Failed to parse auditor response as JSON: {ex}")
 

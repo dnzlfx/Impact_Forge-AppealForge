@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('AppealForge End-to-End Workflow', () => {
   test.beforeEach(async ({ page }) => {
+    // Seed BYOK config so the API key modal does not block the flow.
+    await page.addInitScript(() => {
+      localStorage.setItem('appealforge.featherless_api_key', 'rc_test_key')
+      localStorage.setItem('appealforge.featherless_base_url', 'https://api.featherless.ai/v1')
+    });
+
     // Mock backend appeal generation endpoint for deterministic E2E testing
     await page.route('**/api/v1/appeal/generate-from-files', async (route) => {
       // Simulate realistic processing latency so stepper is observable

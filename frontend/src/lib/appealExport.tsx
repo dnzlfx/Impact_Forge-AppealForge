@@ -125,6 +125,7 @@ export function printAppealDocument(text: string, patient?: string | null, insur
     <html lang="en">
       <head>
         <meta charset="utf-8" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';" />
         <title>Insurance Appeal Letter</title>
         <style>
           @page { margin: 20mm; size: letter; }
