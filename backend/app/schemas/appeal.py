@@ -4,14 +4,14 @@ from pydantic import BaseModel, Field
 
 class AppealCreate(BaseModel):
     denial_letter_text: Optional[str] = Field(
-        default="", description="Texto de la carta de denegación de la aseguradora"
+        default="", description="Text extracted from the insurer's denial letter"
     )
     medical_record_text: Optional[str] = Field(
-        default="", description="Texto del expediente clínico o notas médicas del paciente"
+        default="", description="Text extracted from the patient's medical records or clinical chart"
     )
-    patient_name: Optional[str] = Field(default=None, description="Nombre del paciente")
-    insurer_name: Optional[str] = Field(default=None, description="Nombre de la aseguradora")
-    additional_notes: Optional[str] = Field(default="", description="Instrucciones adicionales")
+    patient_name: Optional[str] = Field(default=None, description="Patient's full name")
+    insurer_name: Optional[str] = Field(default=None, description="Health insurance company name")
+    additional_notes: Optional[str] = Field(default="", description="Additional clinical or procedural instructions")
 
 
 class RagCitation(BaseModel):

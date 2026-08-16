@@ -94,7 +94,7 @@ export function useAppealFlow() {
     } catch (err) {
       dispatch({
         type: 'ERROR',
-        message: err instanceof Error ? err.message : 'Ocurrió un error inesperado',
+        message: err instanceof Error ? err.message : 'An unexpected error occurred during processing',
       })
     }
   }

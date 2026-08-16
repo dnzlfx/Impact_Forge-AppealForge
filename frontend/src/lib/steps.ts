@@ -1,4 +1,4 @@
-/** Los 4 sub-pasos visuales del estado "processing". */
+/** The 4 visual sub-steps of the "processing" state. */
 export interface ProcessingStep {
   id: string
   label: string
@@ -8,22 +8,22 @@ export interface ProcessingStep {
 export const PROCESSING_STEPS: ProcessingStep[] = [
   {
     id: 'reading',
-    label: 'Leyendo la denegación',
-    description: 'Extrayendo motivo de rechazo y códigos CPT / ICD-10 del PDF.',
+    label: 'Parsing Denial Letter',
+    description: 'Extracting denial reasons, clinical findings, and CPT/ICD-10 codes from PDF.',
   },
   {
     id: 'rag',
-    label: 'Consultando guías oficiales (RAG)',
-    description: 'Buscando cobertura en guías clínicas de CMS.',
+    label: 'Querying Official Guidelines (RAG)',
+    description: 'Retrieving relevant CMS National and Local Coverage Determinations (NCD/LCD).',
   },
   {
     id: 'audit',
-    label: 'Auditando con modelo independiente',
-    description: 'Verificando que cada afirmación tenga respaldo real.',
+    label: 'Auditing with Independent Model',
+    description: 'Cross-examining each claim against the original patient medical records.',
   },
   {
     id: 'render',
-    label: 'Preparando visor de revisión',
-    description: 'Renderizando la carta con las frases marcadas.',
+    label: 'Preparing Interactive Review',
+    description: 'Rendering verified appeal letter with highlight flags and clinical citations.',
   },
 ]

@@ -1,18 +1,14 @@
 /**
- * Wrappers de red hacia el backend FastAPI.
+ * Network wrappers for the FastAPI backend.
  *
- * Toda llamada HTTP pasa por aquí; ningún componente conoce la URL del backend.
- * La URL base sale de VITE_API_BASE_URL (ver .env.example).
+ * All HTTP calls route through here; components remain agnostic of backend endpoints.
+ * Base URL is defined by VITE_API_BASE_URL (see .env.example).
  *
- * Estrategia de integración:
- * - Por defecto hablamos con el backend real.
- * - Si el backend no está disponible (se cae el fetch o responde con error de
- *   red), el cliente cae a datos mockeados con MOCK_FALLBACK=true. Esto deja el
- *   flujo de UI usable durante el hackathon sin esperar a que el backend
- *   publique todos los endpoints.
- * - La auditoría es INLINE en la respuesta de /generate-from-files (no hay
- *   endpoint /audit separado todavía). Si backend lo separa después, solo hay
- *   que añadir generateAppealAudit() aquí y llamarlo en useAppealFlow.
+ * Integration strategy:
+ * - Real backend requests by default.
+ * - If the backend is unavailable (network error or connection refused),
+ *   the client gracefully falls back to realistic mock data when MOCK_FALLBACK=true.
+ * - Clinical audit is processed inline in the /generate-from-files response.
  */
 
 import type { AppealResponse } from './types'
@@ -37,7 +33,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     res = await fetch(`${API_BASE_URL}${path}`, init)
   } catch {
-    throw new ApiError('No se pudo conectar con el servidor', 0)
+    throw new ApiError('Unable to connect to the backend server', 0)
   }
 
   if (!res.ok) {
@@ -46,19 +42,19 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       const body = (await res.json()) as { detail?: string }
       if (body.detail) detail = body.detail
     } catch {
-      /* cuerpo no JSON: ignorar */
+      /* non-JSON response body */
     }
     throw new ApiError(detail, res.status)
   }
   return (await res.json()) as T
 }
 
-/** GET /health — útil para mostrar "backend no disponible" en vez de un error genérico. */
+/** GET /health — checks backend availability */
 export async function checkHealth(): Promise<{ status: string }> {
   return request<{ status: string }>('/health')
 }
 
-/** POST /api/v1/appeal/generate-from-files — sube el PDF de denegación (y, opcionalmente, el expediente). */
+/** POST /api/v1/appeal/generate-from-files — uploads denial letter PDF (and optional medical records) */
 export interface AppealResult {
   data: AppealResponse
   isMock: boolean
@@ -103,8 +99,8 @@ function buildMockResponse(input: {
   patientName?: string | null
   insurerName?: string | null
 }): AppealResponse {
-  const patient = input.patientName || 'Paciente Reservado'
-  const insurer = input.insurerName || '[Nombre de la aseguradora]'
+  const patient = input.patientName || 'Jane Doe'
+  const insurer = input.insurerName || 'Aetna Health Management'
   const withRecord = Boolean(input.medicalRecordFile)
 
   return {
@@ -115,32 +111,40 @@ function buildMockResponse(input: {
     },
     rag_citations: [
       {
-        source: 'CMS Med NCD',
-        text: 'Cobertura de resonancia lumbar cuando hay radiculopatía documentada y fallo del tratamiento conservador por al menos 6 semanas.',
+        source: 'CMS NCD 220.4',
+        text: 'Coverage of lumbar MRI is indicated when documented radiculopathy persists after at least 6 weeks of supervised conservative therapy.',
       },
       {
-        source: 'CMS LCD',
-        text: 'La información que respalda la necesidad médica debe constar en el expediente del paciente.',
+        source: 'CMS LCD L34212',
+        text: 'Clinical documentation establishing medical necessity and objective neurological deficits must be substantiated in the patient medical record.',
       },
     ],
-    appeal_text: `Estimado departamento de apelaciones de ${insurer}:
+    appeal_text: `Attn: Appeals and Grievances Department
+${insurer}
 
-La denegación de fecha reciente sobre la resonancia magnética lumbar solicitada para ${patient} es objeto de esta apelación formal.
+RE: Formal Appeal of Medical Coverage Denial
+Patient: ${patient}
+Procedure: Lumbar Spine MRI (CPT: 72148 / 70551)
+Diagnosis: Low Back Pain with Left Lumbar Radiculopathy (ICD-10: M54.5, G43.909)
 
-El estudio fue ordenado por el médico tratante ante la presencia de radiculopatía lumbar izquierda persistente documentada, sin mejoría después de seis semanas de manejo conservador supervisado. El expediente clínico incluye la exploración neurológica y la escala de dolor que sustentan la solicitud, conforme a la guía de cobertura vigente de CMS que ampara estudios de imagen cuando consta evidencia de radiculopatía y fracaso del tratamiento conservador.
+Dear Appeals Committee,
 
-Las solicitudes fueron incorrectamente codificadas en la denegación original: el procedimiento solicitado es 70551 y el diagnóstico de base es M54.5. Ambas codificaciones concuerdan con la documentación del expediente. ${withRecord ? 'El expediente médico adjunto contiene todas las notas de consulta y estudios previos mencionados.' : 'Se adjunta la documentación de soporte para su revisión.'}
+This letter serves as a formal expedited appeal regarding the recent denial of coverage for the physician-ordered Lumbar Spine MRI for ${patient}.
 
-Solicito la reconsideración de esta denegación bajo los lineamientos de, siendo consistente con las guías clínicas citadas anteriormente.`,
+The requested diagnostic imaging was prescribed by the attending physician due to persistent, documented left lumbar radiculopathy with progressive lower extremity paresthesia, which has failed to resolve following six weeks of supervised physical therapy and conservative multimodal management. The attached clinical chart contains full physical examination findings, neurological motor/sensory assessments, and pain scoring meeting all criteria established under CMS National Coverage Determination (NCD 220.4) and Local Coverage Determination (LCD L34212).
+
+The requested procedure (CPT 72148) directly corresponds to the documented ICD-10 diagnostic coding (M54.5). ${withRecord ? 'The accompanying medical record contains all progress notes, physical therapy logs, and clinical assessments supporting this claim.' : 'Supporting medical documentation is available upon request.'}
+
+We respectfully request immediate reconsideration and overturn of this denial. Failure to approve may warrant submission for independent external medical review pursuant to federal guidelines.`,
     audit_flags: withRecord
       ? []
       : [
           {
-            claim_text: 'siendo consistente con las guías clínicas citadas anteriormente',
+            claim_text: 'which has failed to resolve following six weeks of supervised physical therapy',
             issue_type: 'UNVERIFIED_IN_RECORD',
             severity: 'MEDIUM',
             explanation:
-              'Esta afirmación no tiene una cita textual verificable en el expediente. Reemplázala por la referencia concreta de la guía (CMS) con sección y fecha.',
+              'No physical therapy logs were uploaded in the medical record to substantiate the 6-week duration claim. Attach physical therapy records or cite physician notes.',
           },
         ],
   }

@@ -1,102 +1,76 @@
-# AppealForge — Frontend (Vite + React + TypeScript + Tailwind)
+# AppealForge — Frontend Client
 
-Cliente web de **AppealForge**: sube la carta de denegación de la aseguradora
-(un PDF), y el sistema redacta la apelación con respaldo en guías de CMS y la
-audita con un modelo independiente antes de que la revises.
+Web client for **AppealForge**: upload an insurance denial letter PDF (and optional clinical chart), receive an automated, evidence-backed appeal letter grounded in official CMS guidelines, and audit every claim with an independent fact-checking model.
 
-Este frontend se construyó contra el **contrato real del backend** (rama
-`develop`), no contra el borrador de instrucciones — ver "Contracto real" abajo.
+---
 
-## Requisitos
+## Features
 
-- Node.js 18+ (probado con Node 24)
-- El backend corriendo en `http://localhost:8000` (opcional en desarrollo)
+- **Single-page state machine flow**: `idle → uploading → processing → review | error → (reset) → idle`
+- **Synchronized processing stepper**: Real-time visualization of parsing, RAG retrieval, clinical auditing, and final rendering.
+- **Interactive claim review**: Highlights unverified claims with accessible hover and focus tooltips.
+- **CPT & ICD-10 Code extraction panel**: Displays detected codes alongside coverage guideline references.
+- **Graceful mock fallback**: Seamless demo experience even when the backend is offline.
 
-## Puesta en marcha
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ (tested with Node 24)
+- Backend running at `http://localhost:8000` (optional for local mock demo)
+
+### Installation & Run
 
 ```bash
+# Navigate to frontend
 cd frontend
+
+# Install dependencies
 npm install
-cp .env.example .env   # ajusta VITE_API_BASE_URL si hace falta
-npm run dev            # http://localhost:5173
+
+# Set environment variables
+cp .env.example .env
+
+# Start dev server
+npm run dev
 ```
 
-Build de producción y control de calidad:
+Open `http://localhost:5173` in your browser.
 
-```bash
-npm run build   # tsc -b + vite build (sin errores TS antes de commit)
-npm run lint    # oxlint
-```
+---
 
-## Flujo de la UI (máquina de estados)
+## Available Scripts
 
-`idle → uploading → processing → review | error → (reset) → idle`
+- `npm run dev`: Starts local Vite development server.
+- `npm run build`: Type-checks with `tsc` and bundles production assets.
+- `npm run lint`: Fast linting with `oxlint`.
+- `npm run preview`: Previews the production build locally.
 
-No existe navegación manual entre pantallas: todo avanza solo salvo las dos
-acciones del usuario: **Generar apelación** y **Empezar de nuevo**. Durante
-`processing` se animan 4 sub-pasos visuales en paralelo a la/las llamadas reales.
+---
 
-## Contrato real del backend (fuente de verdad)
-
-Definido en `backend/app/schemas/appeal.py` y `backend/app/api/v1/appeal.py`
-(tipos duplicados en `src/lib/types.ts`):
-
-- `POST /api/v1/appeal/generate-from-files` — multipart:
-  - `denial_file: File` (obligatorio)
-  - `medical_record_file: File` (opcional — solo audita si llega)
-  - `patient_name`, `insurer_name`, `additional_notes` (opcionales)
-- Respuesta (`AppealResponse`): `appeal_text`, `codes_detected: {cpt[], icd10[]}`,
-  `rag_citations: [{source, text}]`, `audit_flags: [{claim_text, issue_type, severity, explanation}]`,
-  `status`.
-- `GET /health` — estado del backend.
-- CORS ya habilitado para `http://localhost:5173`.
-
-La **auditoría es inline** en `/generate-from-files`; **no existe endpoint
-`/audit` separado**. El paso 3 del stepper ("Auditando…") se completa cuando
-llegan los `audit_flags` dentro de la misma respuesta.
-
-## Supuestos que Backend 1/2 debe confirmar
-
-Preguntas que quedan abiertas (no bloquean el desarrollo; en desarrollo se usa
-mock si no responde el backend):
-
-1. **`audit_flags[].claim_text`**: asumimos que es substring exacto de
-   `appeal_text` (el frontend lo resalta con una búsqueda case-insensitive;
-   no usamos offsets). Si prefieren devolver `start`/`end`, avisadlo.
-2. **`generate-from-files` es síncrono**: asumimos que una sola respuesta
-   devuelve todo (incluida la auditoría). Si va a tardar >30 s considerad
-   polling o websockets; el stepper ya está listo para acoplarse.
-3. **`medical_record_file` opcional**: la auditoría solo corre cuando el
-   backend recibe expediente. Si se envía solo la denegación, no habrá flags
-   ("Sin marcas de auditoría").
-4. **CORS / health**: ya está cubierto para `localhost:5173` y existe
-   `/health`, pero si los puertos cambian avisadnos.
-
-## URL del backend
-
-- Nada de URLs hardcodeadas en componentes. Toda petición pasa por
-  `src/lib/api.ts` usando `VITE_API_BASE_URL` (por defecto
-  `http://localhost:8000`).
-- `VITE_MOCK_FALLBACK=true` (por defecto): si el backend no responde, la UI
-  cae a datos de ejemplo para poder probar el flujo completo sin servidor.
-
-## Estructura
+## Project Structure
 
 ```
-src/
-  components/
-    DenialUpload.tsx        # dropzone 1 PDF + expediente opcional + metadatos
-    ProcessingStepper.tsx   # stepper de 4 pasos, controlado por props
-    AppealLetterViewer.tsx  # carta + flags con tooltip accesible (hover+teclado)
-    ExtractedCodesPanel.tsx # códigos CPT / ICD-10 con estado
-  hooks/
-    useAppealFlow.ts        # máquina de estados (useReducer)
-  lib/
-    api.ts                  # fetch wrappers + fallback mock
-    types.ts                # copia TS del contrato del backend
-    steps.ts                # definición de los 4 sub-pasos
-    highlight.ts            # split de la carta por claim_text (testable)
-  App.tsx
-  index.css                 # tokens Tailwind + paleta validada
-.env.example
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── AppealLetterViewer.tsx   # Appeal text renderer with flagged audit claims
+│   │   ├── DenialUpload.tsx         # Drag & drop PDF upload zone + clinical chart
+│   │   ├── ExtractedCodesPanel.tsx  # CPT / ICD-10 codes list and status
+│   │   ├── ProcessingStepper.tsx    # Multi-step animated progress stepper
+│   │   └── Skeleton.tsx             # Loading placeholders
+│   ├── hooks/
+│   │   └── useAppealFlow.ts         # Flow state machine (useReducer)
+│   ├── lib/
+│   │   ├── api.ts                   # Fetch API wrappers + mock fallback data
+│   │   ├── highlight.ts             # Exact claim text highlighting logic
+│   │   ├── steps.ts                 # Processing steps definitions
+│   │   └── types.ts                 # Backend data contract types
+│   ├── App.tsx                      # Main container & stage views
+│   ├── main.tsx                     # React root mount
+│   └── index.css                    # Tailwind CSS v4 design tokens
+├── package.json
+└── vite.config.ts
 ```
