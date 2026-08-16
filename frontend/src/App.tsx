@@ -46,7 +46,13 @@ function App() {
           )}
 
           {state.stage === 'review' && state.result && (
-            <ReviewView result={state.result} isMock={state.isMock} onReset={flow.reset} />
+            <ReviewView
+              result={state.result}
+              isMock={state.isMock}
+              onReset={flow.reset}
+              patientName={lastInput?.patientName}
+              insurerName={lastInput?.insurerName}
+            />
           )}
 
           {state.stage === 'error' && (
@@ -62,7 +68,19 @@ function App() {
   )
 }
 
-function ReviewView({ result, isMock, onReset }: { result: AppealResponse; isMock: boolean; onReset: () => void }) {
+function ReviewView({
+  result,
+  isMock,
+  onReset,
+  patientName,
+  insurerName,
+}: {
+  result: AppealResponse
+  isMock: boolean
+  onReset: () => void
+  patientName?: string | null
+  insurerName?: string | null
+}) {
   const codes = normalizeCodes(result.codes_detected)
   const guidesUsed = result.rag_citations.length
 
@@ -87,44 +105,24 @@ function ReviewView({ result, isMock, onReset }: { result: AppealResponse; isMoc
             </span>
           )}
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onReset}
-          leftIcon={
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
-          }
-        >
-          Start New Appeal
-        </Button>
       </header>
 
-      <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_280px]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="min-w-0">
-          <AppealLetterViewer appealText={result.appeal_text} flags={result.audit_flags} />
+          <AppealLetterViewer
+            appealText={result.appeal_text}
+            flags={result.audit_flags}
+            onRegenerate={onReset}
+            patientName={patientName}
+            insurerName={insurerName}
+          />
         </div>
-        <aside className="flex flex-col gap-6 border-border md:border-l md:pl-6">
+        <aside className="flex flex-col gap-6">
           <ExtractedCodesPanel
             codes={codes}
+            citations={result.rag_citations}
             guidesUsed={guidesUsed}
           />
-          {result.rag_citations.length > 0 && (
-            <section aria-labelledby="citations-heading" className="flex flex-col gap-3">
-              <h3 id="citations-heading" className="font-display text-lg font-medium text-deep">
-                Referenced Guidelines
-              </h3>
-              <ul className="flex flex-col gap-2">
-                {result.rag_citations.map((citation, i) => (
-                  <li key={`${citation.source}-${i}`} className="rounded-[4px] border border-border bg-card px-3 py-2">
-                    <p className="text-xs font-semibold text-deep">{citation.source}</p>
-                    <p className="mt-1 line-clamp-3 text-[11px] leading-snug text-mid">{citation.text}</p>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
         </aside>
       </div>
     </section>
