@@ -16,8 +16,7 @@ import type { AppealResponse } from './types'
 const API_BASE_URL =
   (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? ''
 
-const MOCK_FALLBACK =
-  ((import.meta.env.VITE_MOCK_FALLBACK as string | undefined) ?? 'true') === 'true'
+const MOCK_FALLBACK = false
 
 const API_KEY_STORAGE_KEY = 'appealforge.featherless_api_key'
 const BASE_URL_STORAGE_KEY = 'appealforge.featherless_base_url'

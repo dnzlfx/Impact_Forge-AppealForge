@@ -7,7 +7,7 @@ import ApiKeyModal from './components/ApiKeyModal'
 import { AppShell, StageProgress } from './components/layout'
 import { Button } from './components/ui'
 import { useAppealFlow, type AppealInput } from './hooks/useAppealFlow'
-import { getStoredApiKey } from './lib/api'
+import { getStoredApiKey, getConfigStatus } from './lib/api'
 import { PROCESSING_STEPS } from './lib/steps'
 import { normalizeCodes } from './lib/types'
 import type { AppealResponse } from './lib/types'
@@ -20,9 +20,15 @@ function App() {
   const [needsApiKey, setNeedsApiKey] = useState(false)
 
   useEffect(() => {
-    if (!getStoredApiKey()) {
-      setNeedsApiKey(true)
-    }
+    getConfigStatus().then((status) => {
+      if (!status.is_configured && !getStoredApiKey()) {
+        setNeedsApiKey(true)
+      }
+    }).catch(() => {
+      if (!getStoredApiKey()) {
+        setNeedsApiKey(true)
+      }
+    })
   }, [])
 
   const handleSubmit = (input: AppealInput) => {
