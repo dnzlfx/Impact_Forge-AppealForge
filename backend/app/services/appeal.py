@@ -77,16 +77,27 @@ class AppealService:
             if "</think>" in raw_text:
                 content = raw_text.split("</think>", 1)[1]
             elif "\n\n# " in raw_text:
-                content = raw_text[raw_text.find("\n\n# "):]
+                content = raw_text[raw_text.rfind("\n\n# "):]
             elif "\n# " in raw_text:
-                content = raw_text[raw_text.find("\n# "):]
+                content = raw_text[raw_text.rfind("\n# "):]
+            elif "# Formal Appeal" in raw_text:
+                content = raw_text[raw_text.rfind("# Formal Appeal"):]
             else:
                 content = raw_text
         else:
             if "<think>" in content and "</think>" in content:
                 content = re.sub(r"<think>[\s\S]*?</think>", "", content)
+            elif "</think>" in content:
+                content = content.split("</think>", 1)[1]
 
         cleaned = content.strip()
+        # Si quedó algún fragmento de planning o reasoning antes del primer header de Markdown:
+        if "# Formal Appeal" in cleaned:
+            cleaned = cleaned[cleaned.find("# Formal Appeal"):]
+        elif "## 1." in cleaned and not cleaned.startswith("#"):
+            idx = cleaned.find("# ")
+            if idx != -1:
+                cleaned = cleaned[idx:]
         if cleaned.startswith("```markdown"):
             cleaned = cleaned[11:]
         elif cleaned.startswith("```md"):
