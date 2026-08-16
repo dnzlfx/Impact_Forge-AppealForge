@@ -1,5 +1,5 @@
 import logging
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException, Header, UploadFile, File, Form
 
 from app.schemas.appeal import AppealCreate, AppealResponse
 from app.services.appeal import appeal_service
@@ -10,9 +10,17 @@ router = APIRouter(prefix="/appeal", tags=["appeal"])
 
 
 @router.post("/generate", response_model=AppealResponse)
-async def generate_appeal(payload: AppealCreate) -> AppealResponse:
+async def generate_appeal(
+    payload: AppealCreate,
+    x_featherless_api_key: str | None = Header(None),
+    x_featherless_base_url: str | None = Header(None),
+) -> AppealResponse:
     try:
-        return await appeal_service.generate_appeal(payload)
+        return await appeal_service.generate_appeal(
+            payload,
+            api_key=x_featherless_api_key,
+            base_url=x_featherless_base_url,
+        )
     except Exception as e:
         logger.exception("Error generating appeal")
         raise HTTPException(status_code=500, detail=f"Error processing appeal generation: {str(e)}")
@@ -25,6 +33,8 @@ async def generate_appeal_from_files(
     patient_name: str | None = Form(None),
     insurer_name: str | None = Form(None),
     additional_notes: str | None = Form(""),
+    x_featherless_api_key: str | None = Header(None),
+    x_featherless_base_url: str | None = Header(None),
 ) -> AppealResponse:
     try:
         denial_text = ""
@@ -46,7 +56,11 @@ async def generate_appeal_from_files(
             additional_notes=additional_notes or "",
         )
 
-        return await appeal_service.generate_appeal(payload)
+        return await appeal_service.generate_appeal(
+            payload,
+            api_key=x_featherless_api_key,
+            base_url=x_featherless_base_url,
+        )
     except Exception as e:
         logger.exception("Error generating appeal from files")
         raise HTTPException(status_code=500, detail=f"Error parsing files or generating appeal: {str(e)}")

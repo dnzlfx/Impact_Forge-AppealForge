@@ -29,23 +29,19 @@ async def setup_config(req: SaveConfigRequest):
     if not api_key:
         raise HTTPException(status_code=400, detail="API Key cannot be empty")
     
-    base_url = req.base_url.strip() or "https://api.featherless.ai/v1"
+    # Sanitizar saltos de línea para prevenir inyección de variables en .env
+    api_key = api_key.replace("\r", "").replace("\n", "")
+    base_url = req.base_url.strip().replace("\r", "").replace("\n", "") or "https://api.featherless.ai/v1"
     
     env_content = f"FEATHERLESS_API_KEY={api_key}\nFEATHERLESS_BASE_URL={base_url}\n"
     
-    # Save to multiple possible locations (.env and config/.env for Docker persistence)
-    paths_to_write = [
-        ENV_PATH,
-        Path("config/.env"),
-        Path(".env")
-    ]
-    for p in paths_to_write:
-        try:
-            p.parent.mkdir(parents=True, exist_ok=True)
-            with open(p, "w", encoding="utf-8") as f:
-                f.write(env_content)
-        except Exception:
-            pass
+    # Escribir únicamente en la ruta canónica del entorno
+    try:
+        ENV_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with open(ENV_PATH, "w", encoding="utf-8") as f:
+            f.write(env_content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to persist configuration: {e}")
     
     # Update runtime settings
     settings.FEATHERLESS_API_KEY = api_key

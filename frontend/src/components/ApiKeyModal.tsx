@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Input, Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui'
-import { saveConfig } from '../lib/api'
+import { storeApiConfig } from '../lib/api'
 
 interface ApiKeyModalProps {
   isOpen: boolean
@@ -25,7 +25,7 @@ export default function ApiKeyModal({ isOpen, onConfigSaved }: ApiKeyModalProps)
     setLoading(true)
     setError(null)
     try {
-      await saveConfig(apiKey.trim(), baseUrl.trim())
+      storeApiConfig(apiKey.trim(), baseUrl.trim())
       onConfigSaved()
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to save configuration.')
@@ -53,7 +53,7 @@ export default function ApiKeyModal({ isOpen, onConfigSaved }: ApiKeyModalProps)
         <CardContent>
           <form onSubmit={handleSave} className="flex flex-col gap-4">
             <p className="text-xs text-mid">
-              Your key will be securely stored locally in the backend <code>.env</code> file. You will not need to enter it again.
+              Your key is stored locally in your browser and sent with each request. It never touches the server's disk.
             </p>
 
             <div className="flex flex-col gap-1.5">

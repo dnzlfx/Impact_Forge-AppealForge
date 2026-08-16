@@ -7,7 +7,7 @@ import ApiKeyModal from './components/ApiKeyModal'
 import { AppShell, StageProgress } from './components/layout'
 import { Button } from './components/ui'
 import { useAppealFlow, type AppealInput } from './hooks/useAppealFlow'
-import { getConfigStatus } from './lib/api'
+import { getStoredApiKey } from './lib/api'
 import { PROCESSING_STEPS } from './lib/steps'
 import { normalizeCodes } from './lib/types'
 import type { AppealResponse } from './lib/types'
@@ -20,15 +20,9 @@ function App() {
   const [needsApiKey, setNeedsApiKey] = useState(false)
 
   useEffect(() => {
-    getConfigStatus()
-      .then((cfg) => {
-        if (!cfg.is_configured) {
-          setNeedsApiKey(true)
-        }
-      })
-      .catch(() => {
-        /* backend might be offline */
-      })
+    if (!getStoredApiKey()) {
+      setNeedsApiKey(true)
+    }
   }, [])
 
   const handleSubmit = (input: AppealInput) => {
@@ -44,7 +38,6 @@ function App() {
 
   return (
     <AppShell
-      currentStage={state.stage}
       onNewAppeal={state.stage !== 'idle' ? flow.reset : undefined}
       isProcessing={isProcessing}
     >
