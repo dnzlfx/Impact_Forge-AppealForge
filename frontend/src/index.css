@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Cashmere Palette & Design Tokens */
+  --color-canvas: oklch(0.97 0.01 75);
+  --color-card: oklch(1 0 0);
+  --color-card-elevated: oklch(0.99 0.005 75);
+  --color-deep: oklch(0.20 0.02 260);
+  --color-mid: oklch(0.46 0.03 260);
+  --color-muted: oklch(0.58 0.02 260);
+  --color-subtle: oklch(0.85 0.01 75);
+  --color-border: oklch(0.88 0.015 75);
+  --color-border-hover: oklch(0.70 0.03 260);
+
+  /* Accents */
+  --color-accent: oklch(0.55 0.16 250);
+  --color-accent-hover: oklch(0.48 0.18 250);
+  --color-accent-subtle: oklch(0.94 0.04 250);
+  --color-amber: oklch(0.68 0.18 55);
+  --color-amber-subtle: oklch(0.95 0.05 55);
+
+  /* Status and Audits */
+  --color-flag-red: oklch(0.60 0.22 25);
+  --color-flag-red-hover: oklch(0.52 0.24 25);
+  --color-flag-bg: oklch(0.96 0.04 25);
+  --color-success: oklch(0.60 0.18 145);
+  --color-success-bg: oklch(0.96 0.04 145);
+
+  /* Backward-compatible aliases */
+  --color-lilac: oklch(0.88 0.015 75);
+  --color-sky: oklch(0.94 0.04 250);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-border);
+  }
+
+  html {
+    background-color: var(--color-canvas);
+    color: var(--color-deep);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-canvas);
+    color: var(--color-deep);
+    min-height: 100vh;
+  }
+}

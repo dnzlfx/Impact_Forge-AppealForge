@@ -1,0 +1,12 @@
+LCD L34212 - Magnetic Resonance Imaging of the Lumbar Spine
+
+Limitations of Coverage. This LCD applies to MRI of the lumbar spine performed without contrast. Coverage is provided when the medical record documents one or more of the following indications:
+
+1. Radiculopathy with positive straight leg raise (Lasègue sign) or reflex changes refractory to at least 4 weeks of first-line analgesics and conservative therapy.
+2. Suspected spinal stenosis with neurogenic claudication (bilateral leg pain with ambulation, relieved by flexion) in patients over 60 years of age.
+3. Progressive or severe neurologic deficit, cauda equina syndrome, or suspected neoplasm or infection requiring urgent imaging.
+4. Pre-operative planning for lumbar decompression or fusion surgery when the clinical diagnosis is established and surgical intervention is contemplated.
+
+Documentation Requirements. The clinical record must document the history and physical examination findings supporting the indication for the examination. Standard x-rays or other plain films do not provide sufficient information to evaluate the spinal canal contents and are not a substitute.
+
+CPT/HCPCS Codes. This LCD applies to CPT 72148 (MRI of lumbar spinal canal and contents, without contrast material). The documentation must reflect the specific medical necessity for this code.
