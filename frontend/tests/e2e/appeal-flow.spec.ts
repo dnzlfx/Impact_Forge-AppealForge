@@ -2,7 +2,62 @@ import { test, expect } from '@playwright/test';
 
 test.describe('AppealForge End-to-End Workflow', () => {
   test.beforeEach(async ({ page }) => {
+    // Mock backend appeal generation endpoint for deterministic E2E testing
+    await page.route('**/api/v1/appeal/generate-from-files', async (route) => {
+      // Simulate realistic processing latency so stepper is observable
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          status: 'completed',
+          codes_detected: {
+            cpt: ['70551', '72148'],
+            icd10: ['M54.5', 'G43.909'],
+          },
+          rag_citations: [
+            {
+              source: 'CMS NCD 220.4',
+              text: 'Coverage of lumbar MRI is indicated when documented radiculopathy persists after at least 6 weeks of supervised conservative therapy.',
+            },
+            {
+              source: 'CMS LCD L34212',
+              text: 'Clinical documentation establishing medical necessity and objective neurological deficits must be substantiated in the patient medical record.',
+            },
+          ],
+          appeal_text: `Attn: Appeals and Grievances Department
+Aetna Health Management
+
+RE: Formal Appeal of Medical Coverage Denial
+Patient: Jane Doe
+Procedure: Lumbar Spine MRI (CPT: 72148 / 70551)
+Diagnosis: Low Back Pain with Left Lumbar Radiculopathy (ICD-10: M54.5, G43.909)
+
+Dear Appeals Committee,
+
+This letter serves as a formal expedited appeal regarding the recent denial of coverage for the physician-ordered Lumbar Spine MRI for Jane Doe.
+
+The requested diagnostic imaging was prescribed by the attending physician due to persistent, documented left lumbar radiculopathy with progressive lower extremity paresthesia, which has failed to resolve following six weeks of supervised physical therapy and conservative multimodal management. The attached clinical chart contains full physical examination findings, neurological motor/sensory assessments, and pain scoring meeting all criteria established under CMS National Coverage Determination (NCD 220.4) and Local Coverage Determination (LCD L34212).
+
+The requested procedure (CPT 72148) directly corresponds to the documented ICD-10 diagnostic coding (M54.5). Supporting medical documentation is available upon request.
+
+We respectfully request immediate reconsideration and overturn of this denial. Failure to approve may warrant submission for independent external medical review pursuant to federal guidelines.`,
+          audit_flags: [
+            {
+              claim_text: 'which has failed to resolve following six weeks of supervised physical therapy',
+              issue_type: 'UNVERIFIED_IN_RECORD',
+              severity: 'MEDIUM',
+              explanation:
+                'No physical therapy logs were uploaded in the medical record to substantiate the 6-week duration claim. Attach physical therapy records or cite physician notes.',
+            },
+          ],
+        }),
+      });
+    });
+
+
     await page.goto('/');
+
   });
 
   test('1. Page load & shell headers (Header, Stage indicator, API status badge, Upload Card)', async ({ page }) => {
@@ -112,9 +167,10 @@ test.describe('AppealForge End-to-End Workflow', () => {
     await expect(textarea).not.toBeVisible();
 
     // Verify Audit Flags / Notices in Review View
-    await expect(page.getByText('Clinical Fact-Check Notices')).toBeVisible();
+    await expect(page.getByText(/AI Clinical Auditor 2/i)).toBeVisible();
     await expect(page.getByText('MEDIUM').first()).toBeVisible();
     await expect(page.getByText('which has failed to resolve following six weeks of supervised physical therapy', { exact: true })).toBeVisible();
+
 
     // Extracted Codes Panel - Check Tabs (CPT, ICD-10, Citations)
     await expect(page.getByRole('heading', { name: 'Clinical Evidence & Classification' })).toBeVisible();
