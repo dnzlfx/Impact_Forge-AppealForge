@@ -149,7 +149,16 @@ We respectfully request immediate reconsideration and overturn of this denial. F
               'No physical therapy logs were uploaded in the medical record to substantiate the 6-week duration claim. Attach physical therapy records or cite physician notes.',
           },
         ],
+    generation_logs: [
+      `[Pipeline] Received denial document "${input.denialFile.name}" (${input.denialFile.size} bytes)`,
+      `[Extraction] Extracted clinical procedure codes CPT: 70551, 72148 | ICD-10: M54.5, G43.909`,
+      `[RAG Engine] Queried CMS National Coverage Determinations (NCD 220.4, LCD L34212)`,
+      `[AI Writer] Generated formal appeal letter draft adhering to CMS medical necessity criteria`,
+      `[AI Auditor] Cross-examined draft against clinical record (${withRecord ? 'Verified with patient record' : '1 discrepancy flagged: unverified therapy timeline'})`,
+      `[Pipeline] Synthesis complete and ready for payer submission`,
+    ],
   }
 }
+
 
 export { ApiError, API_BASE_URL }
