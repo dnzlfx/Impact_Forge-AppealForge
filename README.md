@@ -8,49 +8,42 @@
 
 Over **60% of legitimate healthcare insurance denials** go unappealed due to administrative friction, complex medical coding, and aggressive insurer review processes. **AppealForge** bridges this gap by transforming insurance denial letters into rigorous, legally sound, and clinically substantiated appeal packages in seconds.
 
+```mermaid
+graph TD
+    A[Patient Medical Records & Denial PDF] --> B[FastAPI Processing Engine]
+    B --> C[PDF Parser & Medical Code Extractor<br/>CPT & ICD-10]
+    C --> D[(ChromaDB Local Vector Store<br/>22+ CMS NCD/LCD Guidelines)]
+    D --> E[Clinical Drafter LLM<br/>DeepSeek-V4-Pro]
+    E --> F[Draft Appeal Letter]
+    F --> G[Adversarial Clinical Auditor LLM<br/>Qwen 2.5 32B]
+    A -.-> G
+    G --> H[Audited Appeal Package<br/>Severity Flags & Guidelines Grounding]
+    H --> I[React 19 Interactive Workspace]
+    I --> J[PDF / Markdown / Rich-Text Export]
+```
+
 ### Key Capabilities
 
-1. **Intelligent Document Ingestion**: Parses denial letters and clinical records from PDF format, automatically extracting rejection rationale and clinical codes (CPT, ICD-10).
+1. **Intelligent Document Ingestion**: Parses denial letters and clinical records from PDF format, extracting rejection rationale and clinical codes (CPT, ICD-10) with contextual ontologies.
 2. **RAG-Augmented Coverage Grounding**: Retrieves authoritative National and Local Coverage Determinations (**CMS NCD / LCD**) to substantiate medical necessity.
 3. **Dual-Model Architecture (Drafting + Clinical Audit)**:
    - **Lead Drafter (`DeepSeek-V4-Pro`)**: Formats an authoritative legal appeal tailored to insurer standards.
-   - **Clinical Auditor (`DeepSeek-V4-Pro`)**: Cross-examines every fact, conservative therapy duration, and symptom in the draft against the raw patient medical records to prevent hallucinations.
+   - **Clinical Auditor (`Qwen/Qwen2.5-32B-Instruct`)**: Cross-examines every fact, conservative therapy duration, and symptom in the draft against raw medical records to eliminate hallucinations.
 4. **Interactive Flagging & Verification**: Visualizes unbacked claims directly in the UI with severity metrics and source-tethered explanations.
-5. **Multi-Format Export**: Generates submission-ready Markdown and PDF appeal letters.
-
----
-
-## Architecture & System Flow
-
-```
-[ FRONTEND (React 19 + TypeScript + Tailwind) ]
-      |
-      | 1. Upload Denial PDF & Patient Medical Record
-      v
-[ FASTAPI BACKEND API ]
-      |
-      +---> 2. PDF Parsing & Medical Code Extraction (CPT / ICD-10)
-      |
-      +---> 3. RAG Engine: CMS Coverage Guidelines Retrieval (NCD/LCD)
-      |
-      +---> 4. Appeal Drafter LLM (Structured Legal-Medical Appeal)
-      |
-      +---> 5. Independent Clinical Auditor LLM (Cross-Examination)
-      |
-      v
-[ JSON Appeal Response with Audit Flags & Citations ]
-      |
-      v
-[ INTERACTIVE REVIEW VIEWER & EXPORT ]
-```
+5. **Multi-Format Export & Local Fallback**: Generates submission-ready Markdown and PDF appeal letters, with built-in mock fallback for offline resilience.
 
 ---
 
 ## Quickstart Guide
 
-### Option A: Run with Docker Compose (Recommended)
+### Option A: Automated One-Click Start (Recommended)
 
-The easiest way to run the entire system (Frontend + Backend + RAG Engine) is using Docker Compose:
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+### Option B: Run with Docker Compose
 
 ```bash
 docker compose up -d --build
@@ -58,11 +51,12 @@ docker compose up -d --build
 
 - **Web App**: `http://localhost:5173`
 - **Backend API Docs**: `http://localhost:8000/docs`
+- **Health Check**: `http://localhost:8000/health`
 
 > **Note on Initial Setup & API Key Security**:
 > When opening the web app for the first time, an interactive configuration modal will prompt for your **Featherless API Key**. 
 > - **Privacy & Local Storage**: Your API key is stored strictly on your local machine (`.env` volume). It is **never** uploaded to any external database, cloud telemetry, or third-party service.
-> - **No Manual File Edits**: You do not need to create or edit `.env` files manually via terminal or code editor.
+> - **No Manual File Edits**: The web UI saves credentials atomically without restarting containers.
 
 To stop the containers:
 ```bash
@@ -71,12 +65,12 @@ docker compose down
 
 ---
 
-### Option B: Run Locally (Without Docker)
+### Option C: Run Locally (Without Docker)
 
 #### Prerequisites
 - **Python 3.11+**
 - **Node.js 18+** / npm
-- **Featherless AI API Key**
+- **Featherless AI API Key** (optional for mock demonstration mode)
 
 #### 1. Backend Setup
 
@@ -91,12 +85,12 @@ source .venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Run automated tests
+PYTHONPATH=. python3 -m unittest discover -s tests
+
 # Start backend server
 uvicorn app.main:app --reload --port 8000
 ```
-
-- API Docs (Swagger UI): `http://localhost:8000/docs`
-- Health Endpoint: `http://localhost:8000/health`
 
 #### 2. Frontend Setup
 
@@ -107,11 +101,29 @@ cd frontend
 # Install packages
 npm install
 
+# Run build & verification
+npm run build
+
 # Launch Vite development server
 npm run dev
 ```
 
 - Web Interface: `http://localhost:5173`
+
+---
+
+## Automated Verification & Testing
+
+Both backend and frontend contain automated test suites:
+
+- **Backend Tests (Unit & API)**:
+  ```bash
+  PYTHONPATH=backend backend/.venv/bin/python3 -m unittest discover -s backend/tests
+  ```
+- **Frontend E2E & Production Build**:
+  ```bash
+  cd frontend && npm run build
+  ```
 
 ---
 
@@ -128,13 +140,14 @@ npm run dev
 | Layer | Technologies |
 |---|---|
 | **Frontend** | React 19, TypeScript, Vite, Tailwind CSS, IBM Plex Sans & Mono, Fraunces |
-| **Backend** | FastAPI, Pydantic v2, Uvicorn, Python 3.11+ |
-| **AI / LLMs** | DeepSeek-V4-Flash (Drafter), Qwen 3.8 27B (Auditor), Featherless AI |
-| **Clinical RAG** | Vector embeddings, CMS Coverage Determinations (NCD/LCD) |
-| **Document Processing** | PyMuPDF / pdfplumber, Pandoc, ReportLab |
+| **Backend** | FastAPI, Pydantic v2, Uvicorn, Python 3.11+, PyMuPDF |
+| **AI / LLMs** | DeepSeek-V4-Pro (Drafter), Qwen 2.5 32B (Auditor), Featherless AI |
+| **Clinical RAG** | ChromaDB, Persistent Vector Embeddings, CMS Coverage Determinations (NCD/LCD) |
+| **Testing & CI** | Python Unittest / TestClient, TypeScript strict check, Vite bundle audit |
 
 ---
 
 ## Team & Hackathon
 
 Built with pride for **Impact Forge Hackathon 2026**.
+
