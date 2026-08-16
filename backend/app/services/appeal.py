@@ -69,11 +69,22 @@ class AppealService:
         )
         msg = response.choices[0].message
         content = msg.content or ""
+
+        # Si el modelo envía el texto dentro de reasoning o tags <think>
         if not content:
-            if hasattr(msg, "reasoning") and msg.reasoning:
-                content = msg.reasoning
-            elif hasattr(msg, "reasoning_content") and msg.reasoning_content:
-                content = msg.reasoning_content
+            raw_text = getattr(msg, "reasoning", "") or getattr(msg, "reasoning_content", "") or ""
+            # Si contiene etiqueta </think>, tomamos lo que viene después (la respuesta final)
+            if "</think>" in raw_text:
+                content = raw_text.split("</think>", 1)[1]
+            elif "\n\n# " in raw_text:
+                content = raw_text[raw_text.find("\n\n# "):]
+            elif "\n# " in raw_text:
+                content = raw_text[raw_text.find("\n# "):]
+            else:
+                content = raw_text
+        else:
+            if "<think>" in content and "</think>" in content:
+                content = re.sub(r"<think>[\s\S]*?</think>", "", content)
 
         cleaned = content.strip()
         if cleaned.startswith("```markdown"):
@@ -149,12 +160,14 @@ class AppealService:
             if match:
                 data = json.loads(match.group(0))
                 for item in data.get("flags", []):
+                    claim = item.get("claim_text") or item.get("draft_value") or item.get("claim") or ""
+                    expl = item.get("explanation") or item.get("description") or item.get("recommended_correction") or ""
                     flags.append(
                         AuditFlag(
-                            claim_text=item.get("claim_text", ""),
-                            issue_type=item.get("issue_type", "UNVERIFIED_IN_RECORD"),
+                            claim_text=claim,
+                            issue_type=item.get("issue_type") or item.get("flag_type") or "UNVERIFIED_IN_RECORD",
                             severity=item.get("severity", "MEDIUM"),
-                            explanation=item.get("explanation", ""),
+                            explanation=expl,
                         )
                     )
         except Exception as ex:
