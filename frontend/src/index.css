@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Paleta validada por el equipo — no cambiar sin avisar. */
+  --color-deep: #312c4d;
+  --color-mid: #53699e;
+  --color-accent: #3c90b8;
+  --color-lilac: #acadd2;
+  --color-sky: #b5cef5;
+
+  /* EXCEPCIÓN intencional a la paleta: señal funcional de frases sin respaldo. */
+  --color-flag-red: #b23b2e;
+  --color-flag-bg: #f7e4e1;
+
+  --color-canvas: #fcfcfe;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-canvas);
+    color: var(--color-deep);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-family: var(--font-sans);
+  }
+}
