@@ -76,16 +76,15 @@ export function useAppealFlow() {
     dispatch({ type: 'GENERATE_START' })
 
     try {
-      // Iniciar llamada real al backend
       const resultPromise = generateAppeal(input)
 
-      // Animar los pasos mientras la IA responde
+      let currentStep = 0
       const timer = setInterval(() => {
-        dispatch({
-          type: 'STEP_ADVANCE',
-          next: Math.min(2, 1),
-        })
-      }, 500)
+        if (currentStep < 2) {
+          currentStep += 1
+          dispatch({ type: 'STEP_ADVANCE', next: currentStep })
+        }
+      }, 700)
 
       const result = await resultPromise
       clearInterval(timer)
@@ -99,6 +98,7 @@ export function useAppealFlow() {
       })
     }
   }
+
 
 
   const reset = () => dispatch({ type: 'RESET' })

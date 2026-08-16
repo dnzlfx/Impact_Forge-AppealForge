@@ -17,7 +17,8 @@ const API_BASE_URL =
   (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? ''
 
 const MOCK_FALLBACK =
-  ((import.meta.env.VITE_MOCK_FALLBACK as string | undefined) ?? 'false') === 'true'
+  ((import.meta.env.VITE_MOCK_FALLBACK as string | undefined) ?? 'true') === 'true'
+
 
 
 class ApiError extends Error {
