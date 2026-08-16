@@ -28,3 +28,12 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+
+# Graphify & AI tooling
+graphify-out/
+.graphify/
+.superpowers/
+.serena/
+.claude/
+.opencode/
+
