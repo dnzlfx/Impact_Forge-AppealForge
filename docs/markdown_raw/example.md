@@ -1,78 +1,58 @@
-**APELACIÓN FORMAL DE COBERTURA** 
+**FORMAL APPEAL OF COVERAGE DENIAL**
 
-# **CENTRO MÉDICO ESPECIALIZADO Y** 
+# **SPECIALIZED MEDICAL CENTER & ASSOCIATES**
 
-# **ASOCIADOS** 
+Date: August 15, 2026
 
-Fecha: 15 de Agosto de 2026 
+Department of Orthopedics & Spinal Neurosurgery
+450 University Ave, Suite 300 • Phone: (555) 234-5678
 
-Departamento de Ortopedia y Neurocirugía Espinal Av. Universidad 450, Col. Lomas • Tel: (55) 5420-9800 
-
-|**Aseguradora:**|Seguros Médicos del Centro, S.A.|**Paciente:**|García Hernández, Carlos M.|
+|**Insurer:**|Central Health Insurance Management, Inc.|**Patient:**|Doe, Jane M.|
 |---|---|---|---|
-|**Dpto. de Quejas:**|Comité de Revisión y Arbitraje|**Póliza / ID:**|SMC-99482103-01|
-|**No. Siniestro /**|**DEN-2026-8812-CL**|**Fecha**|14/04/1982|
-|**Caso:**||**Nacimiento:**||
-|**Procedimiento:**|**CPT 72148**(RMN Columna<br>Lumbar)|**Diagnósticos:**|**M54.5**(Lumbago),**M51.1**<br>(Radiculopatía)|
+|**Appeals Dept:**|Appeals & Grievances Review Committee|**Policy / ID:**|CHM-99482103-01|
+|**Claim / Case #:**|**DEN-2026-8812-CL**|**DOB:**|04/14/1982|
+|**Target Procedure:**|**CPT 72148** (Lumbar Spine MRI without contrast)|**Diagnoses:**|**M54.5** (Low Back Pain), **M51.1** (Lumbar Radiculopathy)|
 
+**SUBJECT:** Formal First-Level Expedited Appeal regarding denial of coverage for *Lumbar Spine MRI without contrast (CPT: 72148)*.
 
+## **1. STATEMENT OF DISPUTE & BASIS OF ADVERSE DETERMINATION**
 
-**ASUNTO:** Apelación formal de primera instancia contra la denegación de cobertura para _Resonancia Magnética de Columna Lumbar sin contraste (CPT 72148)_ . 
+Acting as the authorized medical representative for **Jane M. Doe**, we formally request immediate reconsideration and complete overturn of the adverse coverage determination issued on **August 02, 2026**, which denied prior authorization for CPT 72148 citing *"Lack of medical necessity / Insufficient documentation of exhausted conservative therapy"*.
 
-## **<mark>1. DECLARACIÓN DE INTENCIÓN Y MOTIVO DE DENEGACIÓN</mark>** 
+## **2. CLINICAL SUMMARY & MEDICAL NECESSITY**
 
-Por medio de la presente, actuando en representación médica del paciente **Carlos M. García Hernández** , solicitamos la reconsideración formal y revocación de la resolución emitida con fecha **02 de Agosto de 2026** , mediante la cual se denegó la autorización previa para el procedimiento arriba citado bajo el criterio de _"Falta de justificación médica / No agotamiento de terapia conservadora"_ . 
+The patient presented with an 8-week history of incapacitating low back pain radiating to the right lower extremity along the L5 dermatome, accompanied by paresthesias and distal paresis (4/5 motor strength in ankle dorsiflexion). Physical examination confirms **positive Lasègue / Straight Leg Raise test at 35°** in the right lower extremity and diminished right Achilles deep tendon reflex (+/++++).
 
-## **<mark>2. RESUMEN CLÍNICO Y NECESIDAD MÉDICA</mark>** 
+These objective clinical findings demonstrate acute lumbar nerve root compression with progressive neurological deficit, establishing the imperative medical necessity for diagnostic MRI to direct surgical decompression versus image-guided interventional management.
 
-El paciente acudió con cuadro clínico de lumbociatalgia incapacitante de 8 semanas de evolución, irradiada al miembro pélvico derecho sobre el dermatoma L5, asociada a parestesias y paresia distal (fuerza motora 4/5 en dorsiflexión). A la exploración física se constata **signo de Lasègue positivo a 35°** en pierna derecha y reflejo aquileo disminuido (+/++++). 
+## **3. DOCUMENTED EVIDENCE OF CONSERVATIVE THERAPY COMPLIANCE**
 
-Dichos hallazgos reflejan un compromiso radicular agudo con compresión neural activa, cumpliendo con la necesidad imperativa de diagnóstico por imagen para definir conducta quirúrgica vs. descompresiva guiada. 
+The insurer's assertion of unexhausted conservative management is clinically inaccurate. The enclosed contemporaneous clinical chart certifies strict completion of multi-modal conservative lines of care:
 
-## **<mark>3. EVIDENCIA DE CUMPLIMIENTO DE MANEJO CONSERVADOR</mark>** 
-
-La denegación argumenta erróneamente la carencia de manejo conservador documentado. Se adjunta el expediente cronológico que certifica el agotamiento estricto de las líneas terapéuticas requeridas: 
-
-|**Periodo / Fecha**|**Intervención Clínica**|**Resultado / Observaciones**|
+|**Period / Dates**|**Clinical Intervention**|**Outcome / Observations**|
 |---|---|---|
-|12/06/2026 - 24/07/2026|**Fisioterapia y Rehabilitación Lumbar**|Evolución refractaria. Persistencia de dolor EVA|
-|(6 semanas completas)|18 sesiones documentadas por Servicio<br>de Medicina Física.|8/10 y claudicación a la marcha.|
-|10/06/2026 - Presente|**Farmacoterapia de Primera Línea**<br>AINEs (Celecoxib 200mg/día) +<br>Neuromodulador (Pregabalina 75mg c/<br>12h).|Alivio sintomático nulo del dolor radicular<br>neuropático.|
-|28/07/2026|**Evaluación Neurológica de Control**||
+|06/12/2026 – 07/24/2026<br>(6 full consecutive weeks)|**Physician-Supervised Physical Therapy**<br>18 documented sessions at ActiveLife Rehabilitation.|Refractory course. Persistent visual analog pain score 8/10; antalgic gait claudication.|
+|06/10/2026 – Present|**First-Line Pharmacotherapy**<br>Prescription NSAID (Celecoxib 200mg/day) + Neuromodulator (Pregabalin 75mg BID).|Zero meaningful therapeutic relief of neuropathic radicular pain.|
+|07/28/2026|**Follow-up Neurological Assessment**|Objective progressive sensory deficit across right L5 dermatomal territory.|
 
+## **4. REGULATORY GUIDELINES & CLINICAL COVERAGE CRITERIA (CMS LCD / NCD)**
 
+Pursuant to Centers for Medicare & Medicaid Services Local Coverage Determination (**CMS LCD L34212**) and National Coverage Determination (**NCD 220.4**) for Lumbar Spine MRI:
 
-ClaimGuard Apelaciones Médicas • Confidencial 
+> *"Lumbar spine MRI without contrast is medically indicated and covered following at least 4 to 6 weeks of documented, supervised conservative management (physical therapy, medical therapy) in the presence of objective radicular signs, reflex asymmetry, or progressive neurological deficit."*
 
-Página 1 de 2 
+Patient Jane M. Doe satisfies these criteria across all dimensions, having documented over 6 consecutive weeks of failed multimodal conservative therapy and active motor/sensory radicular compromise.
 
-**Intervención Clínica** 
+## **5. FORMAL DEMAND & CONCLUSION**
 
-**Resultado / Observaciones** 
+We respectfully demand immediate overturn of this denial and prompt authorization for **CPT 72148** within 5 business days to prevent permanent, irreversible neurological impairment. We formally reserve all rights to pursue independent external medical review and regulatory remedies under federal and state guidelines.
 
-**Periodo / Fecha** 
+**Dr. Alexander Vance, MD**  
+Spine & Orthopedic Surgery Specialist  
+NPI: 1982730491 • State License: 8492019  
 
-Déficit sensorial progresivo en territorio L5 derecho. 
+**Jane M. Doe**  
+Patient / Insured Member Signature of Authorization  
 
-## **<mark>4. SUSTENTO NORMATIVO Y GUÍAS CLÍNICAS (LCD / CRITERIOS DE COBERTURA)</mark>** 
-
-De acuerdo con la Determinación de Cobertura Local ( **CMS LCD L34212** ) y los _Clinical Coverage Criteria for Lumbar Spine MRI_ : 
-
-_"La resonancia magnética lumbar está médicamente indicada tras al menos 4 a 6 semanas de manejo conservador documentado (fisioterapia, analgesia guiada) en presencia de signos radiculares objetivos o déficit neurológico progresivo."_ 
-
-El caso cumple a cabalidad con dichos lineamientos, demostrando más de 6 semanas de manejo conservador inefectivo y signos de compresión radicular documentados. 
-
-## **<mark>5. PETICIÓN CONCRETA Y CONCLUSIÓN</mark>** 
-
-Exigimos la autorización expedita del estudio **CPT 72148** en un plazo no mayor a 5 días hábiles a fin de evitar un daño neurológico permanente e irreversible al paciente. Nos reservamos el derecho de elevar esta reclamación ante los organismos regulatorios de arbitraje médico pertinentes en caso de negativa injustificada. 
-
-**Dr. Alejandro Morales Villarreal** Médico Especialista en Traumatología y Ortopedia Cédula Profesional: 8492019 / Reg. Esp: 49201 
-
-### **Carlos M. García Hernández** 
-
-Paciente / Asegurado Titular Firma de Conformidad 
-
-ClaimGuard Apelaciones Médicas • Confidencial 
-
-Página 2 de 2 
+AppealForge Clinical Documentation • Confidential 
 
