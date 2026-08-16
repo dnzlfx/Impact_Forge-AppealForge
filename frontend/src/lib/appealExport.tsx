@@ -128,7 +128,20 @@ export function printAppealDocument(text: string, patient?: string | null, insur
         <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';" />
         <title>Insurance Appeal Letter</title>
         <style>
-          @page { margin: 20mm; size: letter; }
+          @page {
+            margin: 0;
+            size: letter;
+          }
+          @media print {
+            html, body {
+              margin: 0;
+              padding: 0;
+            }
+            body {
+              padding: 20mm !important;
+              max-width: 100% !important;
+            }
+          }
           body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
