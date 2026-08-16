@@ -122,8 +122,10 @@ function ReviewView({
             codes={codes}
             citations={result.rag_citations}
             guidesUsed={guidesUsed}
+            logs={result.generation_logs}
           />
         </aside>
+
       </div>
     </section>
   )

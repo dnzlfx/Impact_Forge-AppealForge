@@ -22,8 +22,10 @@ class AppealService:
         self.auditor_model = settings.AUDITOR_MODEL
 
     async def _call_llm(self, system_prompt: str, user_prompt: str, model: str | None = None) -> str:
+        target_model = model or self.model
+        logger.info(f"Invoking LLM model '{target_model}' (prompt length: {len(user_prompt)} chars)...")
         response = await self.client.chat.completions.create(
-            model=model or self.model,
+            model=target_model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
@@ -36,7 +38,9 @@ class AppealService:
         # Algunos modelos devuelven la respuesta en reasoning_content o content con think tags
         if not content and hasattr(msg, "reasoning_content") and msg.reasoning_content:
             content = msg.reasoning_content
+        logger.info(f"LLM model '{target_model}' response received ({len(content)} chars).")
         return content
+
 
 
     async def _generate_draft(
@@ -100,28 +104,46 @@ class AppealService:
         return flags
 
     async def generate_appeal(self, payload: AppealCreate) -> AppealResponse:
+        logs: List[str] = []
+        logs.append("[Pipeline] Starting AppealForge clinical synthesis engine...")
+
         codes = extract_medical_codes(
             f"{payload.denial_letter_text}\n{payload.medical_record_text}"
         )
+        cpt_list = codes.get("cpt", [])
+        icd_list = codes.get("icd10", [])
+        logs.append(f"[Extraction] Extracted CPT codes: {cpt_list or 'None'} | ICD-10 codes: {icd_list or 'None'}")
 
         query_text = (
             f"{payload.denial_letter_text[:500]} "
-            f"{' '.join(codes.get('cpt', []))} {' '.join(codes.get('icd10', []))}"
+            f"{' '.join(cpt_list)} {' '.join(icd_list)}"
         ).strip()
         citations = rag_engine.query_guidelines(query_text or "Lumbar MRI radiculopathy")
+        logs.append(f"[RAG Engine] Retrieved {len(citations)} CMS National & Local Coverage Determinations (NCD/LCD)")
 
+        logs.append(f"[AI Writer] Invoking primary legal-clinical model '{self.model}' to synthesize formal appeal draft...")
         appeal_text = await self._generate_draft(payload, codes, citations)
+        logs.append(f"[AI Writer] Draft synthesized successfully ({len(appeal_text)} characters generated)")
 
-        audit_flags = []
+        audit_flags: List[AuditFlag] = []
         if payload.medical_record_text.strip():
+            logs.append(f"[AI Auditor] Invoking secondary fact-checker model '{self.auditor_model}' to cross-examine claims vs patient chart...")
             audit_flags = await self._audit_draft(appeal_text, payload.medical_record_text)
+            logs.append(f"[AI Auditor] Audit completed: {len(audit_flags)} potential clinical discrepancy/hallucination flags identified")
+        else:
+            logs.append("[AI Auditor] No separate medical record attached; skipping cross-examination audit phase")
+
+        logs.append("[Pipeline] Workflow execution complete · Ready for payer submission")
 
         return AppealResponse(
             appeal_text=appeal_text,
             codes_detected=codes,
             rag_citations=citations,
             audit_flags=audit_flags,
+            generation_logs=logs,
         )
+
+
 
 
 appeal_service = AppealService()
