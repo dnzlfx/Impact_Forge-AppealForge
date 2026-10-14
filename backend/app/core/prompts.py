@@ -18,7 +18,7 @@ Mandatory letter structure:
    - Clear formal statement contesting the adverse determination and specifying the denial date and rationale.
 3. Clinical Summary & Patient History:
    - Comprehensive chronological timeline of symptoms, conservative treatments tried and failed (medications, physical therapy, injections, rest), physical examination findings, and functional impairment.
-4. Medical Necessity & Regulatory/Clinical Guideline Justification:
+4. Medical Necessity & Regulatory/Clinical Guidelines Justification:
    - Detailed clinical arguments mapping patient findings directly to CMS National Coverage Determinations (NCD), Local Coverage Determinations (LCD), and established specialty society criteria. Quote relevant standard criteria verbatim.
 5. Legal Notice & Request for Relief:
    - Explicit demand for immediate overturn and approval.
